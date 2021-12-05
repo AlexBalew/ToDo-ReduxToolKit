@@ -46,7 +46,7 @@ function App  ({demo = false}: PropsType) {
     if (!isInitialized) {
         return <div style={{ display: "flex", justifyContent: "center", marginTop: "30%"}}><CircularProgress /></div>
     }
-
+//test
 
     return (
         <div style={{flexGrow: 1, background: '#E0E0E0', minHeight: '100vh', paddingBottom: '20px'}}>
