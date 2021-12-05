@@ -1,0 +1,9 @@
+.taskName {
+    flex-grow: 3;
+    overflow-wrap: break-word;
+    max-width: 250px;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
