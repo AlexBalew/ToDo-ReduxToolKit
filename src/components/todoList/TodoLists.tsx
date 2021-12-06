@@ -20,8 +20,8 @@ import {
 import {Grid, Paper} from "@mui/material";
 import {MainReducerType} from "../../store/store";
 import {TodoListsType} from "../app/App";
-import {Redirect} from "react-router-dom";
 import {TodoList} from "./todolist/todolist";
+import {Navigate} from "react-router-dom";
 
 
 export type ToDoListPropsType = {
@@ -76,7 +76,7 @@ export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
     }, [dispatch])
 
     if (!isLoggedIn) {
-        return <Redirect to={'/login'}/>
+        return <Navigate to={'/login'}/>
     }
 
     return (

@@ -4,6 +4,7 @@ import {handleServerAppError, handleServerNetworkError} from "../utils/error-uti
 import {Dispatch} from "redux";
 import {clearReduxAC, clearReduxACType} from "./tasks.reducer";
 import {clearTodoReduxAC, clearTodoReduxACType} from "./todolist.reducer";
+import {createSlice} from "@reduxjs/toolkit";
 
 export type InitialStateType = {
     isLoggedIn : boolean
@@ -13,14 +14,22 @@ const initialState: InitialStateType = {
     isLoggedIn: false
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+const slice = createSlice({
+    name: 'auth',
+    initialState: initialState,
+    reducers: {
+
+    }
+})
+
+export const authReducer = slice.reducer /*(state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'login/SET_USER\'S_IS_LOGGED_IN_STATUS' :
-            return {...state, isLoggedIn: action.isLoggedIn}
+            return {...state, isLoggedIn: action.isLoggedIn} //immerjs
         default:
             return {...state}
     }
-}
+}*/
 
 export type ActionsType = isLoggedInACType | clearReduxACType | clearTodoReduxACType
 

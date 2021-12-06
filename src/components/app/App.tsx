@@ -18,8 +18,9 @@ import {
 } from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {logOutTC} from '../../Reducers/authReducer';
-import {Redirect, Route} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {Login} from "../login/login";
+import {Navigate} from "react-router";
 
 export type TodoListsType = Array<TodolistDomainType>
 
@@ -46,7 +47,8 @@ function App  ({demo = false}: PropsType) {
     if (!isInitialized) {
         return <div style={{ display: "flex", justifyContent: "center", marginTop: "30%"}}><CircularProgress /></div>
     }
-//test3
+
+    console.log('is logged in: ', isLoggedIn)
 
     return (
         <div style={{flexGrow: 1, background: '#E0E0E0', minHeight: '100vh', paddingBottom: '20px'}}>
@@ -64,9 +66,11 @@ function App  ({demo = false}: PropsType) {
                 {status === 'loading' && <LinearProgress color={'secondary'}/>}
             </AppBar>
             <Container fixed>
-                {<Route path={'/TodoList-v2'} /> && <Redirect to={'login'}/>}
-                <Route path={'/login'} render={() => <Login/>} />
-                <Route exact path={'/'} render={() => <TodoLists />} />
+                <Routes>
+                <Route path={'/TodoList-v2'} element={<Navigate to={'login'}/>} />
+                <Route path={'/login'} element={<Login/>} />
+                <Route path={'/'} element={<TodoLists />} />
+                </Routes>
             </Container>
         </div>
     );
