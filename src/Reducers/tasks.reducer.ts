@@ -1,9 +1,9 @@
-import {addTDlType, RemoveTDlType, setTodolistsACType} from "./todolist.reducer";
 import {ResponseTaskType, tasksAPI, TaskStatuses} from "../api/Todolists.api";
 import {Dispatch} from "redux";
 import {MainReducerType} from "../store/store";
 import {setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {addTDlAC, removeTDlAC, setTodolistsAC} from "./todolist.reducer";
 
 
 export type TasksStateType = {
@@ -11,7 +11,7 @@ export type TasksStateType = {
 }
 let initialState: TasksStateType = {}
 
-export const tasksReducer = (state: TasksStateType = initialState, action: ActionSType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: any): TasksStateType => {
     switch (action.type) {
 
         case 'task/DELETE_TASK' : {
@@ -40,17 +40,17 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                     ? {...t, status: action.status} : t)
             }
         }
-        case 'todolists/ADD_TODOLIST' : {
-            return {...state, [action.todoList.id]: []}
+        case addTDlAC.type: {
+            return {...state, [action.payload.todoList.id]: []}
         }
-        case 'todolists/REMOVE_TODOLIST' : {
+        case removeTDlAC.type: {
             let copyState = {...state}
-            delete copyState[action.id]
+            delete copyState[action.payload.id]
             return copyState
         }
-        case 'todolists/SET_TODOLISTS' : {
+        case setTodolistsAC.type: {
             const copyState = {...state}
-            action.todolists.forEach(tl => {
+            action.payload.todolists.forEach((tl: any) => {
                 copyState[tl.id] = []
             })
             return copyState
@@ -69,13 +69,13 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 }
 
 type ActionSType =
-    RemoveTDlType
-    | addTDlType
+    /*RemoveTDlType
+    | addTDlType*/
     | deleteTaskType
     | addTaskACType
     | onChangeTitleType
     | changeTaskStatusACType
-    | setTodolistsACType
+    /*| setTodolistsACType*/
     | setTasksACType
     | clearReduxACType
 
@@ -141,7 +141,7 @@ export const clearReduxAC = () => {
     } as const
 }
 
-export const getTasksTC = (todolistID: string) => (dispatch: Dispatch) => { //сделать
+export const getTasksTC = (todolistID: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     tasksAPI.getTasks(todolistID)
         .then(res => {

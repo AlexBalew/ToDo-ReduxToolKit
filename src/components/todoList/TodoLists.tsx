@@ -60,7 +60,7 @@ export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
         dispatch(changeTaskTitleTC(todolistId, taskId, newTitle))
     }, [dispatch])
     const changeFilter = useCallback((filter: FilterType, todolistId: string) => {
-        dispatch(changeTDlFilterAC(filter, todolistId))
+        dispatch(changeTDlFilterAC({filter, todolistId}))
     }, [dispatch])
 
     const removeTDFunc = useCallback((todolistId: string) => {
