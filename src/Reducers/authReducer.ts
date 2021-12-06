@@ -6,9 +6,6 @@ import {clearReduxAC} from "./tasks.reducer";
 import {clearTodoReduxAC} from "./todolist.reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-/*export type InitialStateType = {
-    isLoggedIn : boolean
-}*/
 
 const initialState = {
     isLoggedIn: false
@@ -26,34 +23,17 @@ const slice = createSlice({
 
 export const authReducer = slice.reducer
 export const {isLoggedInAC} = slice.actions
-/*(state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'login/SET_USER\'S_IS_LOGGED_IN_STATUS' :
-            return {...state, isLoggedIn: action.isLoggedIn} //immerjs
-        default:
-            return {...state}
-    }
-}*/
 
-//export type ActionsType = isLoggedInACType | clearReduxACType | clearTodoReduxACType
-
-//export type isLoggedInACType = ReturnType<typeof isLoggedInAC>
-
-/*export const isLoggedInAC = (isLoggedIn: boolean) => {
-    return {
-        type: 'login/SET_USER\'S_IS_LOGGED_IN_STATUS',
-        isLoggedIn
-    } as const
-}*/
+//__thunks
 
 export const authTC = (authParams: LoginParamsType) => (dispatch: Dispatch) => {
     debugger
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.login(authParams)
         .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(isLoggedInAC({value: true}))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }
@@ -65,14 +45,14 @@ export const authTC = (authParams: LoginParamsType) => (dispatch: Dispatch) => {
 }
 
 export const logOutTC = () => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logOut()
         .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(clearTodoReduxAC())
                     dispatch(clearReduxAC())
                     dispatch(isLoggedInAC({value: false}))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }
@@ -83,5 +63,4 @@ export const logOutTC = () => (dispatch: Dispatch) => {
         })
 }
 
-//type DispatchType = Dispatch<ActionsType | setAppStatusACType | setAPPErrorACType>
 

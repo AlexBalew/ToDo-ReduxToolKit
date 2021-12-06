@@ -1,6 +1,6 @@
 import {todolistsAPI, TodolistType} from "../api/Todolists.api";
 import {Dispatch} from "redux";
-import {RequestStatusType, setAPPErrorACType, setAppStatusAC, setAppStatusACType} from "./app-reducer";
+import {RequestStatusType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 let initialState: Array<TodolistDomainType> = []
@@ -11,7 +11,7 @@ export type TodolistDomainType = TodolistType & {
     entityStatus: RequestStatusType
 }
 
-type DispatchType = Dispatch<ActionSType | setAppStatusACType | setAPPErrorACType>
+//type DispatchType = Dispatch<ActionSType | setAppStatusACType | setAPPErrorACType>
 
 
 export const todolistsReducer = (state: Array<TodolistDomainType> = initialState, action: ActionSType): Array<TodolistDomainType> => {
@@ -119,12 +119,12 @@ export const clearTodoReduxAC = () => {
     } as const
 }
 
-export const getTodolistsTC = () => (dispatch: DispatchType) => {
-    dispatch(setAppStatusAC('loading'))
+export const getTodolistsTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     todolistsAPI.getTDLists()
         .then(res => {
                 dispatch(setTodolistsAC(res.data))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             }
         )
         .catch((error) => {
@@ -132,14 +132,14 @@ export const getTodolistsTC = () => (dispatch: DispatchType) => {
         })
 }
 
-export const removeTodolistsTC = (todolistId: string) => (dispatch: DispatchType) => {
-    dispatch(setAppStatusAC('loading'))
+export const removeTodolistsTC = (todolistId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     dispatch(changeTDlEntityStatusAC('loading', todolistId))
     todolistsAPI.deleteTDLists(todolistId)
         .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(removeTDlAC(todolistId))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }
@@ -150,13 +150,13 @@ export const removeTodolistsTC = (todolistId: string) => (dispatch: DispatchType
         })
 }
 
-export const addTodolistTC = (title: string) => (dispatch: DispatchType) => {
-    dispatch(setAppStatusAC('loading'))
+export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     todolistsAPI.createTDLists(title)
         .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(addTDlAC(res.data.data.item))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }
@@ -167,13 +167,13 @@ export const addTodolistTC = (title: string) => (dispatch: DispatchType) => {
         })
 }
 
-export const changeTodolistTitleTC = (todolistId: string, title: string) => (dispatch: DispatchType) => {
-    dispatch(setAppStatusAC('loading'))
+export const changeTodolistTitleTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     todolistsAPI.updateTDLists(todolistId, title)
         .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(changeTDlTitleAC(todolistId, title))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }
