@@ -1,16 +1,16 @@
-import {setAPPErrorACType, setAppStatusAC, setAppStatusACType} from "./app-reducer";
+import {setAppStatusAC} from "./app-reducer";
 import {authAPI, LoginParamsType} from "../api/Todolists.api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {Dispatch} from "redux";
-import {clearReduxAC, clearReduxACType} from "./tasks.reducer";
-import {clearTodoReduxAC, clearTodoReduxACType} from "./todolist.reducer";
+import {clearReduxAC} from "./tasks.reducer";
+import {clearTodoReduxAC} from "./todolist.reducer";
 import {createSlice} from "@reduxjs/toolkit";
 
-export type InitialStateType = {
+/*export type InitialStateType = {
     isLoggedIn : boolean
-}
+}*/
 
-const initialState: InitialStateType = {
+const initialState = {
     isLoggedIn: false
 }
 
@@ -18,11 +18,16 @@ const slice = createSlice({
     name: 'auth',
     initialState: initialState,
     reducers: {
-
+        isLoggedInAC(state, action: any){
+            debugger
+            state.isLoggedIn = action.payload
+        }
     }
 })
 
-export const authReducer = slice.reducer /*(state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const authReducer = slice.reducer
+export const {isLoggedInAC} = slice.actions
+/*(state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'login/SET_USER\'S_IS_LOGGED_IN_STATUS' :
             return {...state, isLoggedIn: action.isLoggedIn} //immerjs
@@ -31,18 +36,19 @@ export const authReducer = slice.reducer /*(state: InitialStateType = initialSta
     }
 }*/
 
-export type ActionsType = isLoggedInACType | clearReduxACType | clearTodoReduxACType
+//export type ActionsType = isLoggedInACType | clearReduxACType | clearTodoReduxACType
 
-export type isLoggedInACType = ReturnType<typeof isLoggedInAC>
+//export type isLoggedInACType = ReturnType<typeof isLoggedInAC>
 
-export const isLoggedInAC = (isLoggedIn: boolean) => {
+/*export const isLoggedInAC = (isLoggedIn: boolean) => {
     return {
         type: 'login/SET_USER\'S_IS_LOGGED_IN_STATUS',
         isLoggedIn
     } as const
-}
+}*/
 
-export const authTC = (authParams: LoginParamsType) => (dispatch: DispatchType) => {
+export const authTC = (authParams: LoginParamsType) => (dispatch: Dispatch) => {
+    debugger
     dispatch(setAppStatusAC('loading'))
     authAPI.login(authParams)
         .then(res => {
@@ -59,7 +65,7 @@ export const authTC = (authParams: LoginParamsType) => (dispatch: DispatchType) 
         })
 }
 
-export const logOutTC = () => (dispatch: DispatchType) => {
+export const logOutTC = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.logOut()
         .then(res => {
@@ -78,5 +84,5 @@ export const logOutTC = () => (dispatch: DispatchType) => {
         })
 }
 
-type DispatchType = Dispatch<ActionsType | setAppStatusACType | setAPPErrorACType>
+//type DispatchType = Dispatch<ActionsType | setAppStatusACType | setAPPErrorACType>
 
