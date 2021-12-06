@@ -4,7 +4,7 @@ import {handleServerAppError, handleServerNetworkError} from "../utils/error-uti
 import {Dispatch} from "redux";
 import {clearReduxAC} from "./tasks.reducer";
 import {clearTodoReduxAC} from "./todolist.reducer";
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 /*export type InitialStateType = {
     isLoggedIn : boolean
@@ -18,9 +18,8 @@ const slice = createSlice({
     name: 'auth',
     initialState: initialState,
     reducers: {
-        isLoggedInAC(state, action: any){
-            debugger
-            state.isLoggedIn = action.payload
+        isLoggedInAC(state, action: PayloadAction<{value: boolean}>){
+            state.isLoggedIn = action.payload.value
         }
     }
 })
@@ -53,7 +52,7 @@ export const authTC = (authParams: LoginParamsType) => (dispatch: Dispatch) => {
     authAPI.login(authParams)
         .then(res => {
                 if (res.data.resultCode === 0) {
-                    dispatch(isLoggedInAC(true))
+                    dispatch(isLoggedInAC({value: true}))
                     dispatch(setAppStatusAC('succeeded'))
                 } else {
                     handleServerAppError(res.data, dispatch)
@@ -72,7 +71,7 @@ export const logOutTC = () => (dispatch: Dispatch) => {
                 if (res.data.resultCode === 0) {
                     dispatch(clearTodoReduxAC())
                     dispatch(clearReduxAC())
-                    dispatch(isLoggedInAC(false))
+                    dispatch(isLoggedInAC({value: false}))
                     dispatch(setAppStatusAC('succeeded'))
                 } else {
                     handleServerAppError(res.data, dispatch)
