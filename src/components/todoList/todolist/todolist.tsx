@@ -6,7 +6,7 @@ import {ResponseTaskType, TaskStatuses} from "../../../api/Todolists.api";
 import {EditableSpan} from "../../editableSpan/EditableSpan";
 import {Delete} from "@mui/icons-material";
 import {Task} from "../../task/Task";
-import {FilterType, TodolistDomainType} from "../../../Reducers/todolist.reducer";
+import {FilterType, TodolistDomainType} from "../../../Reducers/todolist-reducer";
 import {useDispatch} from "react-redux";
 
 type TodolistPropsType = {

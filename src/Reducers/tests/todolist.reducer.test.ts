@@ -8,7 +8,7 @@ import {
     removeTDlAC,
     setTodolistsAC,
     todolistsReducer
-} from "../todolist.reducer";
+} from "../todolist-reducer";
 import {RequestStatusType} from "../app-reducer";
 
 let todolistID1: string

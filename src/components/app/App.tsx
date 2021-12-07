@@ -3,7 +3,7 @@ import '../../App.css';
 import {TodoLists} from "../todoList/TodoLists";
 import {useDispatch, useSelector} from "react-redux";
 import {MainReducerType} from "../../store/store";
-import {TodolistDomainType} from "../../Reducers/todolist.reducer";
+import {TodolistDomainType} from "../../Reducers/todolist-reducer";
 import {ErrorSnackBar} from "../errorSnackBar/ErrorSnackBar";
 import {initializeAppTC, RequestStatusType} from "../../Reducers/app-reducer";
 import {

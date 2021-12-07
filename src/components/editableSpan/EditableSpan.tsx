@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {TodolistDomainType} from "../../Reducers/todolist.reducer";
+import {TodolistDomainType} from "../../Reducers/todolist-reducer";
 import s from '../task/Tasks.module.css'
 
 export type editableSpanPropsType = {

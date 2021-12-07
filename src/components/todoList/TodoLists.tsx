@@ -7,7 +7,7 @@ import {
     FilterType,
     getTodolistsTC,
     removeTodolistsTC
-} from "../../Reducers/todolist.reducer";
+} from "../../Reducers/todolist-reducer";
 import {TaskStatuses} from "../../api/Todolists.api";
 import {useDispatch, useSelector} from "react-redux";
 import {

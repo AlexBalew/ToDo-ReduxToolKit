@@ -2,8 +2,8 @@ import {setAppStatusAC} from "./app-reducer";
 import {authAPI, LoginParamsType} from "../api/Todolists.api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {Dispatch} from "redux";
-import {clearReduxAC} from "./tasks.reducer";
-import {clearTodoReduxAC} from "./todolist.reducer";
+//import {clearReduxAC} from "./tasks.reducer";
+import {clearTodoReduxAC} from "./todolist-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
@@ -50,7 +50,7 @@ export const logOutTC = () => (dispatch: Dispatch) => {
         .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(clearTodoReduxAC())
-                    dispatch(clearReduxAC())
+                    //dispatch(clearReduxAC())
                     dispatch(isLoggedInAC({value: false}))
                     dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {

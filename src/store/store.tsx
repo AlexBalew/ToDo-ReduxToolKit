@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {todolistsReducer} from "../Reducers/todolist.reducer";
+import {todolistsReducer} from "../Reducers/todolist-reducer";
 import {tasksReducer} from "../Reducers/tasks.reducer";
 import {appReducer} from "../Reducers/app-reducer";
 import thunk from "redux-thunk";
