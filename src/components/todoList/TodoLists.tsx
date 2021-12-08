@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "../addItemForm/AddItemForm";
 import {
-    addTodolistTC,
-    changeTDlFilterAC,
+    addTodolistTC, changeTDlFilterAC,
     changeTodolistTitleTC,
     FilterType,
     getTodolistsTC,

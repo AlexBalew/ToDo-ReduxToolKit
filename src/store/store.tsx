@@ -1,18 +1,16 @@
 import {combineReducers} from "redux";
-import {todolistsReducer} from "../Reducers/todolist-reducer";
-import {tasksReducer} from "../Reducers/tasks.reducer";
-import {appReducer} from "../Reducers/app-reducer";
 import thunk from "redux-thunk";
-import {authReducer} from "../Reducers/authReducer";
 import {configureStore} from "@reduxjs/toolkit";
+import {appReducer, authReducer, tasksReducer, todolistsReducer} from "../Reducers/reducer/all-reducer";
 
 export type MainReducerType = ReturnType<typeof mainReducer>
 
-let mainReducer = combineReducers({
-    todoLists: todolistsReducer,
-    tasks: tasksReducer,
+export let mainReducer = combineReducers({
     app: appReducer,
+    todoLists: todolistsReducer,
     login: authReducer,
+    tasks: tasksReducer,
+
 })
 
 //export let store = createStore(mainReducer, applyMiddleware(thunk)) //redux approach
@@ -22,5 +20,6 @@ export const store = configureStore({ //redux toolkit approach
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunk)
 })
 
+
 // @ts-ignore
-window.store = store
+window['store'] = store

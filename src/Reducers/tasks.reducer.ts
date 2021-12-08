@@ -1,10 +1,11 @@
 import {ResponseTaskType, tasksAPI, TaskStatuses} from "../api/Todolists.api";
 import {Dispatch} from "redux";
 import {MainReducerType} from "../store/store";
-import {setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addTDlAC, removeTDlAC, setTodolistsAC} from "./todolist-reducer";
+import {setAppStatusAC} from "./app-reducer";
+
 
 
 export type TasksStateType = {
@@ -12,7 +13,7 @@ export type TasksStateType = {
 }
 let initialState: TasksStateType = {}
 
-const slice = createSlice({
+export const sliceTasks = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
@@ -43,11 +44,13 @@ const slice = createSlice({
         setTasksAC(state, action: PayloadAction<{ todolistID: string, tasks: Array<ResponseTaskType> }>) {
             state[action.payload.todolistID] = action.payload.tasks
         },
-        /*clearReduxAC(state, action: PayloadAction) {
-           state = {}
-        },*/
+        clearReduxAC(state, action: PayloadAction) {
+            debugger
+          //state = {}
+       },
     },
     extraReducers: (builder) => {
+        debugger
         builder.addCase(addTDlAC, (state, action) => {
             state[action.payload.todoList.id] = []
         })
@@ -62,15 +65,14 @@ const slice = createSlice({
     }
 })
 
-export const tasksReducer = slice.reducer
 export const {
     deleteTaskAC,
     addTaskAC,
     onChangeTaskTitleAC,
     changeTaskStatusAC,
     setTasksAC,
-    //clearReduxAC
-} = slice.actions
+    clearReduxAC
+} = sliceTasks.actions
 
 
 

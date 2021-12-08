@@ -12,19 +12,22 @@ export type TodolistDomainType = TodolistType & {
     entityStatus: RequestStatusType
 }
 
-const slice = createSlice({
+export const sliceTodolist = createSlice({
     name: 'todolists',
     initialState: initialState,
     reducers: {
         removeTDlAC(state, action: PayloadAction<{ id: string }>) {
             const index = state.findIndex(tl => tl.id === action.payload.id)
-            if(index > -1) {
+            if (index > -1) {
                 state.splice(index, 1)
             }
         },
         addTDlAC(state, action: PayloadAction<{ todoList: TodolistType }>) {
             state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
         },
+        /*addTodolist(state, action: PayloadAction<{ todoList: TodolistType }>) {
+            state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
+        },*/
         changeTDlTitleAC(state, action: PayloadAction<{ todolistId: string, title: string }>) {
             const index = state.findIndex(tl => tl.id === action.payload.todolistId)
             state[index].title = action.payload.title
@@ -38,15 +41,14 @@ const slice = createSlice({
             state[index].entityStatus = action.payload.status
         },
         setTodolistsAC(state, action: PayloadAction<{ todolists: Array<TodolistType> }>) {
-           return action.payload.todolists.map(tl => ({...tl, filter: "all", entityStatus: 'idle'}))
+            return action.payload.todolists.map(tl => ({...tl, filter: "all", entityStatus: 'idle'}))
         },
         clearTodoReduxAC(state, action: PayloadAction) {
-            return state = []
+           // state = []
         },
     }
 })
 
-export const todolistsReducer = slice.reducer
 export const {
     removeTDlAC,
     addTDlAC,
@@ -55,7 +57,15 @@ export const {
     clearTodoReduxAC,
     changeTDlEntityStatusAC,
     changeTDlFilterAC
-} = slice.actions
+} = sliceTodolist.actions
+
+/*export const addTodolist = createAction<string | any>('addTD', function add(todoList: TodolistType) {
+    return {
+        payload: {
+            todoList
+        }
+}})*/
+
 
 //__thunks
 
@@ -123,6 +133,8 @@ export const changeTodolistTitleTC = (todolistId: string, title: string) => (dis
             handleServerNetworkError(error, dispatch)
         })
 }
+
+
 
 
 
