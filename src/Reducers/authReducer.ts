@@ -5,8 +5,6 @@ import {Dispatch} from "redux";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {setAppStatusAC} from "./app-reducer";
 import {clearTodoReduxAC} from "./todolist-reducer";
-import {clearReduxAC} from "./tasks.reducer";
-
 
 const initialState = {
     isLoggedIn: false
