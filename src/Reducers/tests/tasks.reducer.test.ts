@@ -5,11 +5,11 @@ import {
     deleteTaskAC,
     onChangeTaskTitleAC,
     setTasksAC,
-    tasksReducer,
     TasksStateType
 } from "../tasks.reducer";
 import {addTDlAC, removeTDlAC, setTodolistsAC} from "../todolist-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/Todolists.api";
+import { tasksReducer } from "../reducer/all-reducer";
 
 let todolistID1 = v1()
 let todolistID2 = v1()
@@ -115,7 +115,7 @@ beforeEach(() => {
 
 test('exact task should be removed from exact array', () => {
 
-    const finalState = tasksReducer(startState, deleteTaskAC(todolistID1, taskID1))
+    const finalState = tasksReducer(startState, deleteTaskAC({todolistId: todolistID1, taskId: taskID1}))
 
     expect(finalState[todolistID1].length).toBe(3)
     expect(finalState[todolistID3].length).toBe(4)
@@ -139,7 +139,7 @@ test('new task should be added to exact array', () => {
         id: '234467'
     })
 
-    const finalState = tasksReducer(startState, addTaskAC(action))
+    const finalState = tasksReducer(startState, addTaskAC({task: action}))
 
     expect(finalState[todolistID2].length).toBe(5)
     expect(finalState[todolistID2][0].title).toBe('Дайте танк!')
@@ -152,7 +152,7 @@ test('new task should be added to exact array', () => {
 
 test('task title should be changed in exact array', () => {
 
-    const finalState = tasksReducer(startState, onChangeTaskTitleAC(todolistID3, taskID1, 'It'))
+    const finalState = tasksReducer(startState, onChangeTaskTitleAC({todolistId: todolistID3, taskId: taskID1, title: 'It'}))
 
     expect(finalState[todolistID3][1].title).toBe('It')
     expect(finalState[todolistID3][2].title).toBe('Family Guy')
@@ -162,7 +162,7 @@ test('task status should be changed in exact array', () => {
 
     let newTaskID = v1()
 
-    const finalState = tasksReducer(startState, changeTaskStatusAC(todolistID3, newTaskID, TaskStatuses.Completed))
+    const finalState = tasksReducer(startState, changeTaskStatusAC({todolistID: todolistID3, taskID: newTaskID, status: TaskStatuses.Completed}))
 
     expect(finalState[todolistID3][1].status).toBe(TaskStatuses.New)
     expect(finalState[todolistID3][2].status).toBe(TaskStatuses.New)
@@ -172,7 +172,7 @@ test('task status should be changed in exact array', () => {
 
 test('new array should be added when new todolist is added', () => {
 
-    const action = addTDlAC({id: '1', title: 'New affairs', addedDate: '', order: 0});
+    const action = addTDlAC({todoList: {id: '1', title: 'New affairs', addedDate: '', order: 0}});
 
     const endState = tasksReducer(startState, action)
 
@@ -190,7 +190,7 @@ test('new array should be added when new todolist is added', () => {
 
 test('property with todolistId should be deleted', () => {
 
-    const action = removeTDlAC(todolistID3);
+    const action = removeTDlAC({id: todolistID3});
 
     const endState = tasksReducer(startState, action)
 
@@ -203,10 +203,10 @@ test('property with todolistId should be deleted', () => {
 
 test('new empty arrays of tasks should be added when todolists were set', () => {
 
-    const action = setTodolistsAC([
+    const action = setTodolistsAC({todolists: [
         {id: '1', title: '111', order: 0, addedDate: ''},
         {id: '2', title: '222', order: 0, addedDate: ''},
-    ])
+    ]})
 
     const endState = tasksReducer({}, action)
 
@@ -219,7 +219,7 @@ test('new empty arrays of tasks should be added when todolists were set', () => 
 
 test('new arrays of tasks should be added to state when todolists were set', () => {
 
-    const action = setTasksAC(todolistID5, [
+    const action = setTasksAC({todolistID: todolistID5, tasks: [
         {
             id: '23',
             title: '11122',
@@ -244,7 +244,7 @@ test('new arrays of tasks should be added to state when todolists were set', () 
             deadline: '',
             todoListId: todolistID3
         },
-    ])
+    ]})
 
     const endState = tasksReducer({[todolistID5]: []}, action)
 
