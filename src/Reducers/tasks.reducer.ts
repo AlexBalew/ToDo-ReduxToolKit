@@ -2,16 +2,30 @@ import {ResponseTaskType, tasksAPI, TaskStatuses} from "../api/Todolists.api";
 import {Dispatch} from "redux";
 import {MainReducerType} from "../store/store";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addTDlAC, removeTDlAC, setTodolistsAC} from "./todolist-reducer";
 import {setAppStatusAC} from "./app-reducer";
-
 
 
 export type TasksStateType = {
     [key: string]: Array<ResponseTaskType>
 }
 let initialState: TasksStateType = {}
+
+export const getTasksTC = createAsyncThunk('tasks/getTasks', (todolistID: string, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+    tasksAPI.getTasks(todolistID)
+        .then(res => {
+                if (res.data.error == null) {
+                    thunkAPI.dispatch(setTasksAC({todolistID, tasks: res.data.items}))
+                    thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+                }
+            }
+        )
+        .catch((error) => {
+            handleServerNetworkError(error, thunkAPI.dispatch)
+        })
+})
 
 export const sliceTasks = createSlice({
     name: 'tasks',
@@ -46,8 +60,8 @@ export const sliceTasks = createSlice({
         },
         clearReduxAC(state, action: PayloadAction) {
             debugger
-          //state = {}
-       },
+            //state = {}
+        },
     },
     extraReducers: (builder) => {
         debugger
@@ -75,8 +89,7 @@ export const {
 } = sliceTasks.actions
 
 
-
-export const getTasksTC = (todolistID: string) => (dispatch: Dispatch) => {
+/*export const getTasksTC = (todolistID: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     tasksAPI.getTasks(todolistID)
         .then(res => {
@@ -91,7 +104,7 @@ export const getTasksTC = (todolistID: string) => (dispatch: Dispatch) => {
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
         })
-}
+}*/
 
 export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))

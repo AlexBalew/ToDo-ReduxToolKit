@@ -1,15 +1,17 @@
 import {Provider} from "react-redux";
 import {MainReducerType} from "../../store/store";
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {combineReducers} from "redux";
 import {v1} from "uuid";
 import {TaskStatuses} from "../../api/Todolists.api";
 import thunk from "redux-thunk";
-import {appReducer, tasksReducer, todolistsReducer} from "../../Reducers/reducer/all-reducer";
+import {appReducer, authReducer, tasksReducer, todolistsReducer} from "../../Reducers/reducer/all-reducer";
+import {configureStore} from "@reduxjs/toolkit";
 
 let mainReducer = combineReducers({
     todoLists: todolistsReducer,
     tasks: tasksReducer,
     app: appReducer,
+    login: authReducer
 })
 
 const InitialStoryBookState: MainReducerType = {
@@ -41,7 +43,7 @@ const InitialStoryBookState: MainReducerType = {
     },
     app: {
         error: null,
-        status: "idle",
+        status: "succeeded",
         isAppInitialized: true,
     },
     login: {
@@ -49,7 +51,11 @@ const InitialStoryBookState: MainReducerType = {
     }
 }
 
-export const storyBookStore = createStore(mainReducer, InitialStoryBookState, applyMiddleware(thunk))
+export const storyBookStore = configureStore({
+    reducer: mainReducer,
+    preloadedState: InitialStoryBookState,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunk)
+})
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>
