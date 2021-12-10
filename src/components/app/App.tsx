@@ -21,7 +21,6 @@ import {logOutTC} from '../../Reducers/authReducer';
 import {Route, Routes} from "react-router-dom";
 import {Login} from "../login/login";
 import {Navigate} from "react-router";
-import {clearReduxAC} from "../../Reducers/tasks.reducer";
 
 export type TodoListsType = Array<TodolistDomainType>
 
@@ -41,7 +40,7 @@ function App  ({demo = false}: PropsType) {
     }, [dispatch])
 
     const logOutHandler = useCallback(() => {
-        dispatch(clearReduxAC())
+        //dispatch(clearReduxAC()) //fix tasks fetching
         dispatch(logOutTC())
     }, [dispatch])
 

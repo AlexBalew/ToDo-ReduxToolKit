@@ -14,11 +14,12 @@ let initialState: TasksStateType = {}
 
 export const getTasksTC = createAsyncThunk('tasks/getTasks', (todolistID: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-    tasksAPI.getTasks(todolistID)
+    return tasksAPI.getTasks(todolistID)
         .then(res => {
-                if (res.data.error == null) {
-                    thunkAPI.dispatch(setTasksAC({todolistID, tasks: res.data.items}))
+                if (res.data.error === null) {
+                    //thunkAPI.dispatch(setTasksAC({todolistID, tasks: res.data.items}))
                     thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+                    return {todolistID, tasks: res.data.items}
                 }
             }
         )
@@ -55,13 +56,6 @@ export const sliceTasks = createSlice({
                 tasks[index] = {...tasks[index], status: action.payload.status}
             }
         },
-        setTasksAC(state, action: PayloadAction<{ todolistID: string, tasks: Array<ResponseTaskType> }>) {
-            state[action.payload.todolistID] = action.payload.tasks
-        },
-        clearReduxAC(state, action: PayloadAction) {
-            debugger
-            //state = {}
-        },
     },
     extraReducers: (builder) => {
         debugger
@@ -76,6 +70,9 @@ export const sliceTasks = createSlice({
                 state[tl.id] = []
             })
         })
+        builder.addCase(getTasksTC.fulfilled, (state, action) => {
+            state[action.payload!.todolistID] = action.payload!.tasks
+        })
     }
 })
 
@@ -84,8 +81,6 @@ export const {
     addTaskAC,
     onChangeTaskTitleAC,
     changeTaskStatusAC,
-    setTasksAC,
-    clearReduxAC
 } = sliceTasks.actions
 
 
