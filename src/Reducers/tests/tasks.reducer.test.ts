@@ -2,9 +2,8 @@ import {v1} from "uuid";
 import {
     addTaskAC,
     changeTaskStatusAC,
-    deleteTaskAC,
+    deleteTaskAC, getTasksTC,
     onChangeTaskTitleAC,
-    setTasksAC,
     TasksStateType
 } from "../tasks.reducer";
 import {addTDlAC, removeTDlAC, setTodolistsAC} from "../todolist-reducer";
@@ -219,7 +218,7 @@ test('new empty arrays of tasks should be added when todolists were set', () => 
 
 test('new arrays of tasks should be added to state when todolists were set', () => {
 
-    const action = setTasksAC({todolistID: todolistID5, tasks: [
+    const action = getTasksTC.fulfilled({todolistID: todolistID5, tasks: [
         {
             id: '23',
             title: '11122',
@@ -244,7 +243,7 @@ test('new arrays of tasks should be added to state when todolists were set', () 
             deadline: '',
             todoListId: todolistID3
         },
-    ]})
+    ]}, '', todolistID5)
 
     const endState = tasksReducer({[todolistID5]: []}, action)
 
