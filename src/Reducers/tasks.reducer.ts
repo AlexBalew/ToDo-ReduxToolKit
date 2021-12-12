@@ -27,18 +27,34 @@ export const getTasksTC = createAsyncThunk('tasks/getTasks', (todolistID: string
             handleServerNetworkError(error, thunkAPI.dispatch)
         })
 })
+export const deleteTaskTC = createAsyncThunk('tasks/deleteTask', (param: {todolistID: string, taskId: string}, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+    return tasksAPI.deleteTask(param.todolistID, param.taskId)
+        .then((res) => {
+                if (res.data.resultCode === 0) {
+                    thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+                    return {todolistId: param.todolistID, taskId: param.taskId}
+                } else {
+                    handleServerAppError(res.data,  thunkAPI.dispatch)
+                }
+            }
+        )
+        .catch((error) => {
+            handleServerNetworkError(error, thunkAPI.dispatch)
+        })
+})
 
 export const sliceTasks = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        deleteTaskAC(state, action: PayloadAction<{ todolistId: string, taskId: string }>) {
+        /*deleteTaskAC(state, action: PayloadAction<{ todolistId: string, taskId: string }>) { moved to extra reducers
             const tasks = state[action.payload.todolistId]
             const index = tasks.findIndex(task => task.id === action.payload.taskId)
             if (index > -1) {
                 tasks.splice(index, 1)
             }
-        },
+        },*/
         addTaskAC(state, action: PayloadAction<{ task: ResponseTaskType }>) {
             state[action.payload.task.todoListId].unshift(action.payload.task)
         },
@@ -58,7 +74,6 @@ export const sliceTasks = createSlice({
         },
     },
     extraReducers: (builder) => {
-        debugger
         builder.addCase(addTDlAC, (state, action) => {
             state[action.payload.todoList.id] = []
         })
@@ -73,11 +88,17 @@ export const sliceTasks = createSlice({
         builder.addCase(getTasksTC.fulfilled, (state, action) => {
             state[action.payload!.todolistID] = action.payload!.tasks
         })
+        builder.addCase(deleteTaskTC.fulfilled, (state, action) => {
+            const tasks = state[action.payload!.todolistId]
+            const index = tasks.findIndex(task => task.id === action.payload!.taskId)
+            if (index > -1) {
+                tasks.splice(index, 1)
+            }
+        })
     }
 })
 
 export const {
-    deleteTaskAC,
     addTaskAC,
     onChangeTaskTitleAC,
     changeTaskStatusAC,
@@ -101,7 +122,7 @@ export const {
         })
 }*/
 
-export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
+/*export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     tasksAPI.deleteTask(todolistId, taskId)
         .then((res) => {
@@ -116,7 +137,7 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: D
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
         })
-}
+}*/
 
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
