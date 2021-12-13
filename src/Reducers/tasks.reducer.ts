@@ -12,22 +12,21 @@ export type TasksStateType = {
 }
 let initialState: TasksStateType = {}
 
-export const getTasksTC = createAsyncThunk('tasks/getTasks', (todolistID: string, thunkAPI) => {
+export const getTasksTC = createAsyncThunk('tasks/getTasks', async (todolistID: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-    return tasksAPI.getTasks(todolistID)
-        .then(res => {
-                if (res.data.error === null) {
-                    //thunkAPI.dispatch(setTasksAC({todolistID, tasks: res.data.items}))
-                    thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
-                    return {todolistID, tasks: res.data.items}
-                }
-            }
-        )
-        .catch((error) => {
+    const res = await tasksAPI.getTasks(todolistID)
+    if (res.data.error === null)
+        try {
+            //thunkAPI.dispatch(setTasksAC({todolistID, tasks: res.data.items}))
+            thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+            return {todolistID, tasks: res.data.items}
+        } catch (error: any) {
             handleServerNetworkError(error, thunkAPI.dispatch)
-        })
+        }
 })
-export const deleteTaskTC = createAsyncThunk('tasks/deleteTask', (param: {todolistID: string, taskId: string}, thunkAPI) => {
+
+
+export const deleteTaskTC = createAsyncThunk('tasks/deleteTask', (param: { todolistID: string, taskId: string }, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     return tasksAPI.deleteTask(param.todolistID, param.taskId)
         .then((res) => {
@@ -35,7 +34,7 @@ export const deleteTaskTC = createAsyncThunk('tasks/deleteTask', (param: {todoli
                     thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
                     return {todolistId: param.todolistID, taskId: param.taskId}
                 } else {
-                    handleServerAppError(res.data,  thunkAPI.dispatch)
+                    handleServerAppError(res.data, thunkAPI.dispatch)
                 }
             }
         )

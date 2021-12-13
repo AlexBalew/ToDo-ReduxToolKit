@@ -1,9 +1,15 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material"
-import {useFormik} from 'formik'
+import {FormikHelpers, useFormik} from 'formik'
 import {useDispatch, useSelector} from "react-redux";
 import {authTC} from "../../Reducers/authReducer";
 import {MainReducerType} from "../../store/store";
 import {Navigate} from "react-router-dom";
+
+type FormValuesTypes = {
+    email: string,
+    password: string,
+    rememberMe: boolean
+}
 
 export const Login = () => {
 
@@ -28,8 +34,10 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        onSubmit: values => {
-           dispatch(authTC(values))
+        onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesTypes>) => {
+           const res = await dispatch(authTC(values))
+            formikHelpers.setFieldError('email', 'fake error')
+            //if (res === 'bad') { } // show error
         }
     })
 
