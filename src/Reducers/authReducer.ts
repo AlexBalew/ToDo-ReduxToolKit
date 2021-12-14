@@ -1,4 +1,4 @@
-import {authAPI, LoginParamsType} from "../api/Todolists.api";
+import {authAPI, FieldErrorType, LoginParamsType} from "../api/Todolists.api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {Dispatch} from "redux";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -6,7 +6,9 @@ import {setAppStatusAC} from "./app-reducer";
 import {clearTodoReduxAC} from "./todolist-reducer";
 
 
-export const authTC = createAsyncThunk('auth/login', async (authParams: LoginParamsType, thunkAPI) => {
+export const authTC = createAsyncThunk<{isLoggedIn: boolean}, LoginParamsType, {rejectValue: {errors: Array<string>, fieldsErrors?: Array<FieldErrorType>}}>(
+    'auth/login',
+    async (authParams, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await authAPI.login(authParams)
@@ -15,11 +17,17 @@ export const authTC = createAsyncThunk('auth/login', async (authParams: LoginPar
             return {isLoggedIn: true}
         } else {
             handleServerAppError(res.data, thunkAPI.dispatch)
-            return {isLoggedIn: false}
+            return thunkAPI.rejectWithValue({
+                errors: res.data.messages,
+                fieldsErrors: res.data.fieldsErrors
+            })
         }
     } catch (error: any) {
         handleServerNetworkError(error, thunkAPI.dispatch)
-        return {isLoggedIn: true}
+        return thunkAPI.rejectWithValue({
+            errors: [error.message],
+            fieldsErrors: undefined
+        })
     }
 })
 
@@ -33,11 +41,11 @@ export const sliceAuth = createSlice({
             state.isLoggedIn = action.payload.value
         }
     },
-    extraReducers: builder =>  {
+    extraReducers: builder => {
         builder.addCase(authTC.fulfilled, (state, action) => {
-           if(action.payload){
-               state.isLoggedIn = action.payload.isLoggedIn
-           }
+            if (action.payload) {
+                state.isLoggedIn = action.payload.isLoggedIn
+            }
         })
     }
 })

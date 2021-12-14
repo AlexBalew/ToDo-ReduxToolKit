@@ -39,9 +39,11 @@ type DeleteTodolistResponseType = { ///all types in generic one
     data: {}
 }*/
 
+export type FieldErrorType = { error: string, field: string };
 export type ResponseType<T = {}> = {
     resultCode: number
     messages: Array<string>
+    fieldsErrors?: Array<FieldErrorType>
     //fieldsErrors: Array<string>
     data: T
 }

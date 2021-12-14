@@ -1,8 +1,8 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material"
 import {FormikHelpers, useFormik} from 'formik'
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {authTC} from "../../Reducers/authReducer";
-import {MainReducerType} from "../../store/store";
+import {MainReducerType, useAppDispatch} from "../../store/store";
 import {Navigate} from "react-router-dom";
 
 type FormValuesTypes = {
@@ -13,7 +13,7 @@ type FormValuesTypes = {
 
 export const Login = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isLoggedIn = useSelector<MainReducerType, boolean>(state => state.login.isLoggedIn)
 
     const formik = useFormik({
@@ -35,8 +35,17 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesTypes>) => {
-           const res = await dispatch(authTC(values))
-            formikHelpers.setFieldError('email', 'fake error')
+           const action = await dispatch(authTC(values))
+            if (authTC.rejected.match(action)) {
+                if(action.payload?.fieldsErrors?.length) {
+                    const error = action.payload.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error)
+                } else {
+
+                }
+
+            }
+
             //if (res === 'bad') { } // show error
         }
     })
