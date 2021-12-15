@@ -1,35 +1,52 @@
 import {authAPI, FieldErrorType, LoginParamsType} from "../api/Todolists.api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {Dispatch} from "redux";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {setAppStatusAC} from "./app-reducer";
-import {clearTodoReduxAC} from "./todolist-reducer";
 
 
-export const authTC = createAsyncThunk<{isLoggedIn: boolean}, LoginParamsType, {rejectValue: {errors: Array<string>, fieldsErrors?: Array<FieldErrorType>}}>(
+export const authTC = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType, { rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> } }>(
     'auth/login',
     async (authParams, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-    try {
-        const res = await authAPI.login(authParams)
-        if (res.data.resultCode === 0) {
-            thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
-            return {isLoggedIn: true}
-        } else {
-            handleServerAppError(res.data, thunkAPI.dispatch)
+        thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+        try {
+            const res = await authAPI.login(authParams)
+            if (res.data.resultCode === 0) {
+                thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+                return {isLoggedIn: true}
+            } else {
+                handleServerAppError(res.data, thunkAPI.dispatch)
+                return thunkAPI.rejectWithValue({
+                    errors: res.data.messages,
+                    fieldsErrors: res.data.fieldsErrors
+                })
+            }
+        } catch (error: any) {
+            handleServerNetworkError(error, thunkAPI.dispatch)
             return thunkAPI.rejectWithValue({
-                errors: res.data.messages,
-                fieldsErrors: res.data.fieldsErrors
+                errors: [error.message],
+                fieldsErrors: undefined
             })
         }
-    } catch (error: any) {
-        handleServerNetworkError(error, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({
-            errors: [error.message],
-            fieldsErrors: undefined
-        })
-    }
-})
+    })
+
+export const logOutTC = createAsyncThunk(
+    'auth/logOut',
+    async (authParams, thunkAPI) => {
+        thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+        try {
+            const res = await authAPI.logOut()
+            if (res.data.resultCode === 0) {
+                //thunkAPI.dispatch(clearTodoReduxAC())
+                thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+                return
+            } else {
+                handleServerAppError(res.data, thunkAPI.dispatch)
+            }
+        } catch (error: any) {
+            handleServerNetworkError(error, thunkAPI.dispatch)
+        }
+    })
+
 
 export const sliceAuth = createSlice({
     name: 'auth',
@@ -42,10 +59,14 @@ export const sliceAuth = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(authTC.fulfilled, (state, action) => {
-            if (action.payload) {
-                state.isLoggedIn = action.payload.isLoggedIn
-            }
+        builder.addCase(authTC.fulfilled, (state) => {
+            /* if (action.payload) {
+                 state.isLoggedIn = action.payload.isLoggedIn
+             }*/
+            state.isLoggedIn = true
+        })
+        builder.addCase(logOutTC.fulfilled, (state) => {
+            state.isLoggedIn = false
         })
     }
 })
@@ -71,7 +92,8 @@ export const {isLoggedInAC} = sliceAuth.actions
         })
 }*/
 
-export const logOutTC = () => (dispatch: Dispatch) => {
+/*
+export const logOutTC_ = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logOut()
         .then(res => {
@@ -88,5 +110,6 @@ export const logOutTC = () => (dispatch: Dispatch) => {
             handleServerNetworkError(error, dispatch)
         })
 }
+*/
 
 
