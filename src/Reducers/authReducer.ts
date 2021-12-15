@@ -41,9 +41,11 @@ export const logOutTC = createAsyncThunk(
                 return
             } else {
                 handleServerAppError(res.data, thunkAPI.dispatch)
+                return thunkAPI.rejectWithValue('')
             }
         } catch (error: any) {
             handleServerNetworkError(error, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue('')
         }
     })
 

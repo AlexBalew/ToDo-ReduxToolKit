@@ -11,7 +11,6 @@ export let mainReducer = combineReducers({
     todoLists: todolistsReducer,
     login: authReducer,
     tasks: tasksReducer,
-
 })
 
 //export let store = createStore(mainReducer, applyMiddleware(thunk)) //redux approach
