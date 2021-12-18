@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {
-    addTaskAC,
+    addTaskTC,
     changeTaskStatusAC, deleteTaskTC,
     getTasksTC,
     onChangeTaskTitleAC,
@@ -129,7 +129,7 @@ test('exact task should be removed from exact array', () => {
 
 test('new task should be added to exact array', () => {
 
-    const action = ({
+    const task = {
         todoListId: todolistID2,
         title: 'Дайте танк!',
         status: TaskStatuses.New,
@@ -140,17 +140,17 @@ test('new task should be added to exact array', () => {
         priority: 0,
         startDate: '',
         id: '234467'
-    })
+    }
 
-    const finalState = tasksReducer(startState, addTaskAC({task: action}))
+    const action = addTaskTC.fulfilled({task}, 'requestId', {title: task.title, todolistID: task.todoListId})
+
+    const finalState = tasksReducer(startState, action)
 
     expect(finalState[todolistID2].length).toBe(5)
     expect(finalState[todolistID2][0].title).toBe('Дайте танк!')
     expect(finalState[todolistID2][2].title).toBe('Neuro')
     expect(finalState[todolistID4].length).toBe(4)
     expect(finalState[todolistID2][4].title).toBe('Liquid')
-
-
 })
 
 test('task title should be changed in exact array', () => {
