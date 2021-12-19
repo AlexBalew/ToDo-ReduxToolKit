@@ -55,8 +55,8 @@ export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
         dispatch(deleteTaskTC({todolistID, taskId}))
     }, [dispatch])
 
-    const onChangeTaskTitle = useCallback((todolistId: string, taskId: string, newTitle: string) => {
-        dispatch(changeTaskTitleTC(todolistId, taskId, newTitle))
+    const onChangeTaskTitle = useCallback((todolistId: string, taskId: string, title: string) => {
+        dispatch(changeTaskTitleTC({todolistId, taskId, title}))
     }, [dispatch])
     const changeFilter = useCallback((filter: FilterType, todolistId: string) => {
         dispatch(changeTDlFilterAC({filter, todolistId}))

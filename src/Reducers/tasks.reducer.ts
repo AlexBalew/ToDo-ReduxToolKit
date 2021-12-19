@@ -1,5 +1,4 @@
 import {ResponseTaskType, tasksAPI, TaskStatuses} from "../api/Todolists.api";
-import {Dispatch} from "redux";
 import {MainReducerType} from "../store/store";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -104,6 +103,43 @@ export const changeTaskStatusTC = createAsyncThunk('tasks/changeTaskStatus',
                 .then((res) => {
                         if (res.data.resultCode === 0) {
                             dispatch(changeTaskStatusAC({todolistID: param.todolistId, taskID: param.taskId, status: param.status}))
+                            dispatch(setAppStatusAC({status: 'succeeded'}))
+                        } else {
+                            handleServerAppError(res.data, dispatch)
+                        }
+                    }
+                )
+                .catch((error) => {
+                    handleServerNetworkError(error, dispatch)
+                })
+        }
+    })
+
+export const changeTaskTitleTC = createAsyncThunk('tasks/changeTaskTitle',
+    (param: { todolistId: string, taskId: string, title: string }, {dispatch, getState}) => {
+        dispatch(setAppStatusAC({status: 'loading'}))
+
+        /* const allTasksFromState = getState().tasks; //подробная запись
+         const tasksForCurrentTodolist = allTasksFromState[todolistId]
+         const task = tasksForCurrentTodolist.find(t => {
+             return t.id === taskId
+         })*/
+
+        const state = getState() as MainReducerType
+        const task = state.tasks[param.todolistId].find(t => t.id === param.taskId)
+
+        if (task) {
+            tasksAPI.updateTask(param.todolistId, param.taskId, {
+                title: param.title,
+                startDate: task.startDate,
+                priority: task.priority,
+                description: task.description,
+                deadline: task.deadline,
+                status: task.status
+            })
+                .then((res) => {
+                        if (res.data.resultCode === 0) {
+                            dispatch(onChangeTaskTitleAC({todolistId: param.todolistId, taskId: param.taskId, title: param.title}))
                             dispatch(setAppStatusAC({status: 'succeeded'}))
                         } else {
                             handleServerAppError(res.data, dispatch)
@@ -278,6 +314,7 @@ export const changeTaskStatusTC = (todolistId: string, taskId: string, status: T
     }
 */
 
+/*
 export const changeTaskTitleTC = (todolistId: string, taskId: string, title: string) =>
     (dispatch: Dispatch, getState: () => MainReducerType) => {
         dispatch(setAppStatusAC({status: 'loading'}))
@@ -306,4 +343,4 @@ export const changeTaskTitleTC = (todolistId: string, taskId: string, title: str
                     handleServerNetworkError(error, dispatch)
                 })
         }
-    }
+    }*/
