@@ -43,7 +43,7 @@ export const deleteTaskTC = createAsyncThunk('tasks/deleteTask', (param: { todol
         })
 })
 
-export const addTaskTC = createAsyncThunk('tasks/addTask',  (param: { todolistID: string, title: string }, {dispatch}) => {
+export const addTaskTC = createAsyncThunk('tasks/addTask', (param: { todolistID: string, title: string }, {dispatch}) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     return tasksAPI.createTask(param.todolistID, param.title)
         .then((res) => {
@@ -79,7 +79,43 @@ export const addTaskTC = createAsyncThunk('tasks/addTask',  (param: { todolistID
         }
 })*/
 
-//test
+export const changeTaskStatusTC = createAsyncThunk('tasks/changeTaskStatus',
+    (param: { todolistId: string, taskId: string, status: TaskStatuses }, {dispatch, getState}) => {
+        dispatch(setAppStatusAC({status: 'loading'}))
+
+        /* const allTasksFromState = getState().tasks; //подробная запись
+         const tasksForCurrentTodolist = allTasksFromState[todolistId]
+         const task = tasksForCurrentTodolist.find(t => {
+             return t.id === taskId
+         })*/
+
+        const state = getState() as MainReducerType
+        const task = state.tasks[param.todolistId].find(t => t.id === param.taskId)
+
+        if (task) {
+            tasksAPI.updateTask(param.todolistId, param.taskId, {
+                title: task.title,
+                startDate: task.startDate,
+                priority: task.priority,
+                description: task.description,
+                deadline: task.deadline,
+                status: param.status
+            })
+                .then((res) => {
+                        if (res.data.resultCode === 0) {
+                            dispatch(changeTaskStatusAC({todolistID: param.todolistId, taskID: param.taskId, status: param.status}))
+                            dispatch(setAppStatusAC({status: 'succeeded'}))
+                        } else {
+                            handleServerAppError(res.data, dispatch)
+                        }
+                    }
+                )
+                .catch((error) => {
+                    handleServerNetworkError(error, dispatch)
+                })
+        }
+    })
+
 
 export const sliceTasks = createSlice({
     name: 'tasks',
@@ -137,7 +173,7 @@ export const sliceTasks = createSlice({
             }
         })
         builder.addCase(addTaskTC.fulfilled, (state, action) => {
-            if(action.payload) {
+            if (action.payload) {
                 state[action.payload.task.todoListId].unshift(action.payload.task)
             }
         })
@@ -204,15 +240,16 @@ export const {
         })
 }*/
 
+/*
 export const changeTaskStatusTC = (todolistId: string, taskId: string, status: TaskStatuses) =>
     (dispatch: Dispatch, getState: () => MainReducerType) => {
         dispatch(setAppStatusAC({status: 'loading'}))
 
-        /* const allTasksFromState = getState().tasks; //подробная запись
+        /!* const allTasksFromState = getState().tasks; //подробная запись
          const tasksForCurrentTodolist = allTasksFromState[todolistId]
          const task = tasksForCurrentTodolist.find(t => {
              return t.id === taskId
-         })*/
+         })*!/
 
         const task = getState().tasks[todolistId].find(t => t.id === taskId)
 
@@ -239,6 +276,7 @@ export const changeTaskStatusTC = (todolistId: string, taskId: string, status: T
                 })
         }
     }
+*/
 
 export const changeTaskTitleTC = (todolistId: string, taskId: string, title: string) =>
     (dispatch: Dispatch, getState: () => MainReducerType) => {
