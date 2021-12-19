@@ -1,7 +1,7 @@
 import {ResponseTaskType, tasksAPI, TaskStatuses} from "../api/Todolists.api";
 import {MainReducerType} from "../store/store";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {addTDlAC, removeTDlAC, setTodolistsAC} from "./todolist-reducer";
 import {setAppStatusAC} from "./app-reducer";
 
@@ -79,7 +79,7 @@ export const addTaskTC = createAsyncThunk('tasks/addTask', (param: { todolistID:
 })*/
 
 export const changeTaskStatusTC = createAsyncThunk('tasks/changeTaskStatus',
-    (param: { todolistId: string, taskId: string, status: TaskStatuses }, {dispatch, getState}) => {
+    async (param: { todolistId: string, taskId: string, status: TaskStatuses }, {dispatch, getState}) => {
         dispatch(setAppStatusAC({status: 'loading'}))
 
         /* const allTasksFromState = getState().tasks; //подробная запись
@@ -92,7 +92,7 @@ export const changeTaskStatusTC = createAsyncThunk('tasks/changeTaskStatus',
         const task = state.tasks[param.todolistId].find(t => t.id === param.taskId)
 
         if (task) {
-            tasksAPI.updateTask(param.todolistId, param.taskId, {
+            const res = await tasksAPI.updateTask(param.todolistId, param.taskId, {
                 title: task.title,
                 startDate: task.startDate,
                 priority: task.priority,
@@ -100,23 +100,21 @@ export const changeTaskStatusTC = createAsyncThunk('tasks/changeTaskStatus',
                 deadline: task.deadline,
                 status: param.status
             })
-                .then((res) => {
-                        if (res.data.resultCode === 0) {
-                            dispatch(changeTaskStatusAC({todolistID: param.todolistId, taskID: param.taskId, status: param.status}))
-                            dispatch(setAppStatusAC({status: 'succeeded'}))
-                        } else {
-                            handleServerAppError(res.data, dispatch)
-                        }
-                    }
-                )
-                .catch((error) => {
-                    handleServerNetworkError(error, dispatch)
-                })
+            try {
+                if (res.data.resultCode === 0) {
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
+                    return param
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
+            } catch (error: any) {
+                handleServerNetworkError(error, dispatch)
+            }
         }
     })
 
 export const changeTaskTitleTC = createAsyncThunk('tasks/changeTaskTitle',
-    (param: { todolistId: string, taskId: string, title: string }, {dispatch, getState}) => {
+    async (param: { todolistId: string, taskId: string, title: string }, {dispatch, getState}) => {
         dispatch(setAppStatusAC({status: 'loading'}))
 
         /* const allTasksFromState = getState().tasks; //подробная запись
@@ -129,7 +127,7 @@ export const changeTaskTitleTC = createAsyncThunk('tasks/changeTaskTitle',
         const task = state.tasks[param.todolistId].find(t => t.id === param.taskId)
 
         if (task) {
-            tasksAPI.updateTask(param.todolistId, param.taskId, {
+            const res = await tasksAPI.updateTask(param.todolistId, param.taskId, {
                 title: param.title,
                 startDate: task.startDate,
                 priority: task.priority,
@@ -137,18 +135,16 @@ export const changeTaskTitleTC = createAsyncThunk('tasks/changeTaskTitle',
                 deadline: task.deadline,
                 status: task.status
             })
-                .then((res) => {
-                        if (res.data.resultCode === 0) {
-                            dispatch(onChangeTaskTitleAC({todolistId: param.todolistId, taskId: param.taskId, title: param.title}))
-                            dispatch(setAppStatusAC({status: 'succeeded'}))
-                        } else {
-                            handleServerAppError(res.data, dispatch)
-                        }
-                    }
-                )
-                .catch((error) => {
-                    handleServerNetworkError(error, dispatch)
-                })
+            try {
+                if (res.data.resultCode === 0) {
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
+                    return param
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
+            } catch (error: any) {
+                handleServerNetworkError(error, dispatch)
+            }
         }
     })
 
@@ -167,20 +163,20 @@ export const sliceTasks = createSlice({
         /*addTaskAC(state, action: PayloadAction<{ task: ResponseTaskType }>) { // moved to extra reducers
             state[action.payload.task.todoListId].unshift(action.payload.task)
         },*/
-        onChangeTaskTitleAC(state, action: PayloadAction<{ todolistId: string, taskId: string, title: string }>) {
-            const tasks = state[action.payload.todolistId]
-            const index = tasks.findIndex(task => task.id === action.payload.taskId)
-            if (index > -1) {
-                tasks[index] = {...tasks[index], title: action.payload.title}
-            }
-        },
-        changeTaskStatusAC(state, action: PayloadAction<{ todolistID: string, taskID: string, status: TaskStatuses }>) {
-            const tasks = state[action.payload.todolistID]
-            const index = tasks.findIndex(task => task.id === action.payload.taskID)
-            if (index > -1) {
-                tasks[index] = {...tasks[index], status: action.payload.status}
-            }
-        },
+        /* onChangeTaskTitleAC(state, action: PayloadAction<{ todolistId: string, taskId: string, title: string }>) {
+             const tasks = state[action.payload.todolistId]
+             const index = tasks.findIndex(task => task.id === action.payload.taskId)
+             if (index > -1) {
+                 tasks[index] = {...tasks[index], title: action.payload.title}
+             }
+         },
+         changeTaskStatusAC(state, action: PayloadAction<{ todolistID: string, taskID: string, status: TaskStatuses }>) {
+             const tasks = state[action.payload.todolistID]
+             const index = tasks.findIndex(task => task.id === action.payload.taskID)
+             if (index > -1) {
+                 tasks[index] = {...tasks[index], status: action.payload.status}
+             }
+         },*/
     },
     extraReducers: (builder) => {
         builder.addCase(addTDlAC, (state, action) => {
@@ -213,14 +209,33 @@ export const sliceTasks = createSlice({
                 state[action.payload.task.todoListId].unshift(action.payload.task)
             }
         })
+        builder.addCase(changeTaskStatusTC.fulfilled, (state, action) => {
+            if (action.payload) {
+                const tasks = state[action.payload.todolistId]
+                const index = tasks.findIndex(task => task.id === action.payload?.taskId)
+                if (index > -1) {
+                    tasks[index] = {...tasks[index], status: action.payload.status}
+                }
+            }
+
+        })
+        builder.addCase(changeTaskTitleTC.fulfilled, (state, action) => {
+            if (action.payload) {
+                const tasks = state[action.payload.todolistId]
+                const index = tasks.findIndex(task => task.id === action.payload?.taskId)
+                if (index > -1) {
+                    tasks[index] = {...tasks[index], title: action.payload.title}
+                }
+            }
+        })
     }
 })
 
 
-export const {
+/*export const { //there are no ac already
     onChangeTaskTitleAC,
     changeTaskStatusAC,
-} = sliceTasks.actions
+} = sliceTasks.actions*/
 
 
 /*export const getTasksTC = (todolistID: string) => (dispatch: Dispatch) => {
