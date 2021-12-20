@@ -63,15 +63,15 @@ export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
     }, [dispatch])
 
     const removeTDFunc = useCallback((todolistId: string) => {
-        dispatch(removeTodolistsTC(todolistId))
+        dispatch(removeTodolistsTC({todolistId}))
     }, [dispatch])
 
     const addTDList = useCallback((title: string) => {
-        dispatch(addTodolistTC(title))
+        dispatch(addTodolistTC({title}))
     }, [dispatch])
 
-    const changeTDListTitleAPP = useCallback((todolistId: string, newTitle: string) => {
-        dispatch(changeTodolistTitleTC(todolistId, newTitle))
+    const changeTDListTitleAPP = useCallback((todolistId: string, title: string) => {
+        dispatch(changeTodolistTitleTC({todolistId, title}))
     }, [dispatch])
 
     if (!isLoggedIn) {
