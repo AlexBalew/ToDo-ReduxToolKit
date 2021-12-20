@@ -3,13 +3,12 @@ import {TodoListsType} from "../../components/app/App";
 import {
     addTodolistTC,
     changeTDlEntityStatusAC,
-    changeTDlFilterAC,
-    changeTDlTitleAC,
+    changeTDlFilterAC, changeTodolistTitleTC,
     FilterType,
     getTodolistsTC, removeTodolistsTC,
 } from "../todolist-reducer";
 import {RequestStatusType} from "../app-reducer";
-import { todolistsReducer } from "../reducer/all-reducer";
+import {todolistsReducer} from "../reducer/all-reducer";
 
 let todolistID1: string
 let todolistID2: string
@@ -52,7 +51,8 @@ test('exact todolist should be added', () => {
 
 test('exact todolists title should be changed', () => {
 
-    const finalState = todolistsReducer(startState, changeTDlTitleAC({todolistId: todolistID3, title: 'New SOW'}))
+    let newTDLTitleData = {todolistId: todolistID3, title: 'New SOW'};
+    const finalState = todolistsReducer(startState, changeTodolistTitleTC.fulfilled(newTDLTitleData, 'requestId', newTDLTitleData))
 
     expect(finalState[2].title).toBe('New SOW')
     expect(finalState[3].title).toBe('TDList')
@@ -62,7 +62,10 @@ test('exact todolists filter value should be changed', () => {
 
     let newFilterValue: FilterType = 'completed'
 
-    const finalState = todolistsReducer(startState, changeTDlFilterAC({filter: newFilterValue, todolistId: todolistID1}))
+    const finalState = todolistsReducer(startState, changeTDlFilterAC({
+        filter: newFilterValue,
+        todolistId: todolistID1
+    }))
 
     expect(finalState[2].filter).toBe('all')
     expect(finalState[0].filter).toBe('completed')
@@ -84,7 +87,10 @@ test('exact todolists entity status should be changed', () => {
 
     let newEntityStatus: RequestStatusType = 'succeeded'
 
-    const finalState = todolistsReducer(startState, changeTDlEntityStatusAC({status: newEntityStatus, tlID: todolistID1}))
+    const finalState = todolistsReducer(startState, changeTDlEntityStatusAC({
+        status: newEntityStatus,
+        tlID: todolistID1
+    }))
 
     expect(finalState[0].entityStatus).toBe('succeeded')
     expect(finalState[2].entityStatus).toBe('failed')

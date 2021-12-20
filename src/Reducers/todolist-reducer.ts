@@ -82,10 +82,10 @@ export const sliceTodolist = createSlice({
         /*addTodolist(state, action: PayloadAction<{ todoList: TodolistType }>) {
             state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
         },*/
-        changeTDlTitleAC(state, action: PayloadAction<{ todolistId: string, title: string }>) {
+        /*changeTDlTitleAC(state, action: PayloadAction<{ todolistId: string, title: string }>) {
             const index = state.findIndex(tl => tl.id === action.payload.todolistId)
             state[index].title = action.payload.title
-        },
+        },*/
         changeTDlFilterAC(state, action: PayloadAction<{ filter: FilterType, todolistId: string }>) {
             const index = state.findIndex(tl => tl.id === action.payload.todolistId)
             state[index].filter = action.payload.filter
@@ -116,11 +116,16 @@ export const sliceTodolist = createSlice({
             if (action.payload)
                 state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
         })
+        builder.addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
+            if (action.payload) {
+                const index = state.findIndex(tl => tl.id === action.payload?.todolistId)
+                state[index].title = action.payload.title
+            }
+        })
     }
 })
 
 export const {
-    changeTDlTitleAC,
     changeTDlEntityStatusAC,
     changeTDlFilterAC
 } = sliceTodolist.actions
