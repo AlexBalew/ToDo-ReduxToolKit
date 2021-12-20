@@ -2,7 +2,7 @@ import {ResponseTaskType, tasksAPI, TaskStatuses} from "../api/Todolists.api";
 import {MainReducerType} from "../store/store";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {addTDlAC, removeTDlAC, setTodolistsAC} from "./todolist-reducer";
+import {addTDlAC, getTodolistsTC, removeTDlAC} from "./todolist-reducer";
 import {setAppStatusAC} from "./app-reducer";
 
 
@@ -185,7 +185,8 @@ export const sliceTasks = createSlice({
         builder.addCase(removeTDlAC, (state, action) => {
             delete state[action.payload.id]
         })
-        builder.addCase(setTodolistsAC, (state, action) => {
+        builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
+            if (action.payload)
             action.payload.todolists.forEach((tl: any) => {
                 state[tl.id] = []
             })

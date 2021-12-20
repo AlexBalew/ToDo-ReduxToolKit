@@ -1,12 +1,13 @@
 import {v1} from "uuid";
 import {TodoListsType} from "../../components/app/App";
 import {
-    addTDlAC, changeTDlEntityStatusAC,
+    addTDlAC,
+    changeTDlEntityStatusAC,
     changeTDlFilterAC,
     changeTDlTitleAC,
     FilterType,
+    getTodolistsTC,
     removeTDlAC,
-    setTodolistsAC,
 } from "../todolist-reducer";
 import {RequestStatusType} from "../app-reducer";
 import { todolistsReducer } from "../reducer/all-reducer";
@@ -70,7 +71,7 @@ test('exact todolists filter value should be changed', () => {
 
 test('todolists should be set', () => {
 
-    const finalState = todolistsReducer([], setTodolistsAC({todolists: startState}))
+    const finalState = todolistsReducer([], getTodolistsTC.fulfilled({todolists: startState}, 'requestId'))
 
     expect(finalState.length).toBe(4)
     expect(finalState[1].filter).toBe('all')
