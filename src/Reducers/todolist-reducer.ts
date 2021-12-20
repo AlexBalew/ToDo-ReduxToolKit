@@ -76,9 +76,9 @@ export const sliceTodolist = createSlice({
                     state.splice(index, 1)
                 }
             },*/
-        addTDlAC(state, action: PayloadAction<{ todoList: TodolistType }>) {
-            state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
-        },
+        /*  addTDlAC(state, action: PayloadAction<{ todoList: TodolistType }>) {
+              state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
+          },*/
         /*addTodolist(state, action: PayloadAction<{ todoList: TodolistType }>) {
             state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
         },*/
@@ -112,11 +112,14 @@ export const sliceTodolist = createSlice({
                 state.splice(index, 1)
             }
         })
+        builder.addCase(addTodolistTC.fulfilled, (state, action) => {
+            if (action.payload)
+                state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
+        })
     }
 })
 
 export const {
-    addTDlAC,
     changeTDlTitleAC,
     changeTDlEntityStatusAC,
     changeTDlFilterAC

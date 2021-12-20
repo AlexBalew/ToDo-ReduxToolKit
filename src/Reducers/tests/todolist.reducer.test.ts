@@ -1,7 +1,7 @@
 import {v1} from "uuid";
 import {TodoListsType} from "../../components/app/App";
 import {
-    addTDlAC,
+    addTodolistTC,
     changeTDlEntityStatusAC,
     changeTDlFilterAC,
     changeTDlTitleAC,
@@ -43,7 +43,8 @@ test('exact todolist should be added', () => {
 
     let newTodoListTitle = 'New SOW'
 
-    const finalState = todolistsReducer(startState, addTDlAC({todoList: {id: '2', title: newTodoListTitle, order: 0, addedDate: ''}}))
+    let newTodolist = {todoList: {id: '2', title: newTodoListTitle, order: 0, addedDate: ''}};
+    const finalState = todolistsReducer(startState, addTodolistTC.fulfilled(newTodolist, 'requestId', {title: newTodoListTitle}))
 
     expect(finalState.length).toBe(5)
     expect(finalState[0].title).toBe(newTodoListTitle)

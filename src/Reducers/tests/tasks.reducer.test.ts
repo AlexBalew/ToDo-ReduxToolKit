@@ -5,7 +5,7 @@ import {
     getTasksTC,
     TasksStateType
 } from "../tasks.reducer";
-import {addTDlAC, getTodolistsTC, removeTodolistsTC} from "../todolist-reducer";
+import {addTodolistTC, getTodolistsTC, removeTodolistsTC} from "../todolist-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/Todolists.api";
 import {tasksReducer} from "../reducer/all-reducer";
 
@@ -184,7 +184,7 @@ test('task status should be changed in exact array', () => {
 
 test('new array should be added when new todolist is added', () => {
 
-    const action = addTDlAC({todoList: {id: '1', title: 'New affairs', addedDate: '', order: 0}});
+    const action = addTodolistTC.fulfilled({todoList: {id: '1', title: 'New affairs', addedDate: '', order: 0}}, 'requestId', {title: ''});
 
     const endState = tasksReducer(startState, action)
 

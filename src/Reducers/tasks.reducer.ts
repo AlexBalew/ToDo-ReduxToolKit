@@ -2,7 +2,7 @@ import {ResponseTaskType, tasksAPI, TaskStatuses} from "../api/Todolists.api";
 import {MainReducerType} from "../store/store";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {addTDlAC, getTodolistsTC, removeTodolistsTC} from "./todolist-reducer";
+import {addTodolistTC, getTodolistsTC, removeTodolistsTC} from "./todolist-reducer";
 import {setAppStatusAC} from "./app-reducer";
 
 
@@ -179,18 +179,19 @@ export const sliceTasks = createSlice({
          },*/
     },
     extraReducers: (builder) => {
-        builder.addCase(addTDlAC, (state, action) => {
-            state[action.payload.todoList.id] = []
+        builder.addCase(addTodolistTC.fulfilled, (state, action) => {
+            if (action.payload)
+                state[action.payload.todoList.id] = []
         })
         builder.addCase(removeTodolistsTC.fulfilled, (state, action) => {
             if (action.payload)
-            delete state[action.payload.id]
+                delete state[action.payload.id]
         })
         builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
             if (action.payload)
-            action.payload.todolists.forEach((tl: any) => {
-                state[tl.id] = []
-            })
+                action.payload.todolists.forEach((tl: any) => {
+                    state[tl.id] = []
+                })
         })
         builder.addCase(getTasksTC.fulfilled, (state, action) => {
             if (action.payload) {
