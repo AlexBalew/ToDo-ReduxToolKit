@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {IconButton} from "@mui/material";
-import { AddBox } from "@mui/icons-material";
+import {AddBox} from "@mui/icons-material";
 
 
 export type AddItemFormPropsType = {
@@ -10,7 +10,11 @@ export type AddItemFormPropsType = {
     label?: string
 }
 
-export const AddItemForm = React.memo(({callback, disabled = false, label = 'new task title'}: AddItemFormPropsType) => {
+export const AddItemForm = React.memo(({
+                                           callback,
+                                           disabled = false,
+                                           label = 'new task title'
+                                       }: AddItemFormPropsType) => {
 
     let [title, setTitle] = useState('')
     let [error, setError] = useState('')

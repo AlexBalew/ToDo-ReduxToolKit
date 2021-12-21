@@ -15,7 +15,7 @@ type TodolistPropsType = {
     tasks: Array<ResponseTaskType>
     changeFilter: (filter: FilterType, todolistId: string) => void
     addTask: (todolistId: string, title: string) => void
-    changeTaskStatus: (todolistId: string, taskId: string, status: TaskStatuses, ) => void
+    changeTaskStatus: (todolistId: string, taskId: string, status: TaskStatuses,) => void
     onChangeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
     deleteTask: (todolistId: string, taskId: string) => void
     removeTDFunc: (todolistId: string) => void

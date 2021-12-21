@@ -37,7 +37,7 @@ export const EditableSpan = React.memo((props: editableSpanPropsType) => {
     return (editMode
             ? <input onChange={onChangeTitleHandler} value={title} autoFocus onBlur={setViewNode}
                      onKeyPress={onKeyPressHandler} disabled={props.todolist.entityStatus === 'loading'}
-            className={s.taskName}/>
+                     className={s.taskName}/>
             : <span onDoubleClick={activateEditMode} className={s.taskName}>{props.title}</span>
     )
 

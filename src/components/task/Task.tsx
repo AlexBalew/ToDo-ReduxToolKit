@@ -24,10 +24,12 @@ export const Task = React.memo((props: TaskPropsType) => {
         props.onChangeTaskTitle(props.todolistId, props.task.id, newTitle)
     }, [props.todolistId, props.task.id, props.onChangeTaskTitle])
 
-    return <li key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'completedTask' : ''} style={{maxWidth: '250px', display: 'flex', alignItems: "center", flexGrow: 1}}>
+    return <li key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'completedTask' : ''}
+               style={{maxWidth: '250px', display: 'flex', alignItems: "center", flexGrow: 1}}>
         <Checkbox onChange={onChangeCheckedHandler} checked={props.task.status === TaskStatuses.Completed} style={{}}/>
-        <EditableSpan title={props.task.title} onChange={onChangeTitleHandler} todolist={props.todolist} />
-        <IconButton aria-label="delete" onClick={() => props.deleteTask(props.todolistId, props.task.id)} disabled={props.todolist.entityStatus === 'loading'} style={{marginRight: 0}}>
+        <EditableSpan title={props.task.title} onChange={onChangeTitleHandler} todolist={props.todolist}/>
+        <IconButton aria-label="delete" onClick={() => props.deleteTask(props.todolistId, props.task.id)}
+                    disabled={props.todolist.entityStatus === 'loading'} style={{marginRight: 0}}>
             <Delete/>
         </IconButton>
     </li>
