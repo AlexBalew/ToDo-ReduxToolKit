@@ -25,10 +25,9 @@ import {Navigate} from "react-router";
 export type TodoListsType = Array<TodolistDomainType>
 
 type PropsType = {
-    demo?: boolean
 }
 
-function App  ({demo = false}: PropsType) {
+function App(props: PropsType) {
 
     const dispatch = useDispatch()
     const isInitialized = useSelector<MainReducerType, boolean>(state => state.app.isAppInitialized)
@@ -36,7 +35,9 @@ function App  ({demo = false}: PropsType) {
     const status = useSelector<MainReducerType, RequestStatusType>(state => state.app.status)
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        if (!isInitialized) {
+            dispatch(initializeAppTC())
+        }
     }, [dispatch])
 
     const logOutHandler = useCallback(() => {
@@ -46,10 +47,8 @@ function App  ({demo = false}: PropsType) {
 
 
     if (!isInitialized) {
-        return <div style={{ display: "flex", justifyContent: "center", marginTop: "30%"}}><CircularProgress /></div>
+        return <div style={{display: "flex", justifyContent: "center", marginTop: "30%"}}><CircularProgress/></div>
     }
-
-    console.log('is logged in: ', isLoggedIn)
 
     return (
         <div style={{flexGrow: 1, background: '#E0E0E0', minHeight: '100vh', paddingBottom: '20px'}}>
@@ -62,15 +61,17 @@ function App  ({demo = false}: PropsType) {
                     <Typography variant="h6" style={{flexGrow: 1}} align='center'>
                         ToDoList
                     </Typography>
-                    {isLoggedIn && <Button color="inherit" onClick={() => {logOutHandler()}}>Log out</Button>}
+                    {isLoggedIn && <Button color="inherit" onClick={() => {
+                        logOutHandler()
+                    }}>Log out</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress color={'secondary'}/>}
             </AppBar>
             <Container fixed>
                 <Routes>
-                <Route path={'/TodoList-v2'} element={<Navigate to={'login'}/>} />
-                <Route path={'/login'} element={<Login/>} />
-                <Route path={'/'} element={<TodoLists />} />
+                    <Route path={'/TodoList-v2'} element={<Navigate to={'login'}/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path={'/'} element={<TodoLists/>}/>
                 </Routes>
             </Container>
         </div>

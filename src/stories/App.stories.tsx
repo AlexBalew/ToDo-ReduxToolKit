@@ -16,7 +16,7 @@ export default {
 
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: Story = () => <App demo={true}/>;
+const Template: Story = () => <App />;
 
 export const AppExample = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
