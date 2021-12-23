@@ -76,8 +76,6 @@ export const TodoLists = React.memo((props: ToDoListPropsType) => {
         return <Navigate to={'/login'}/>
     }
 
-    console.log(1111)
-
     return (
         <>
             <Grid container style={{padding: '20px'}}>
