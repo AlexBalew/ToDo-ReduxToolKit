@@ -2,7 +2,6 @@ import React, {useCallback, useEffect} from 'react';
 import '../../App.css';
 import {TodoLists} from "../todoList/TodoLists";
 import {useDispatch, useSelector} from "react-redux";
-import {MainReducerType} from "../../store/store";
 import {TodolistDomainType} from "../../Reducers/todolist-reducer";
 import {ErrorSnackBar} from "../errorSnackBar/ErrorSnackBar";
 import {initializeAppTC, RequestStatusType} from "../../Reducers/app-reducer";
@@ -21,6 +20,7 @@ import {logOutTC} from '../../Reducers/authReducer';
 import {Route, Routes} from "react-router-dom";
 import {Login} from "../login/login";
 import {Navigate} from "react-router";
+import {MainReducerType} from "../../store/mainReducer";
 
 export type TodoListsType = Array<TodolistDomainType>
 
@@ -43,7 +43,8 @@ function App(props: PropsType) {
     const logOutHandler = useCallback(() => {
         //dispatch(clearReduxAC()) //fix tasks fetching
         dispatch(logOutTC())
-    }, [dispatch])
+    }, [dispatch]);
+
 
 
     if (!isInitialized) {

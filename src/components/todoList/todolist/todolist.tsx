@@ -32,7 +32,9 @@ export const TodoList = React.memo((props: TodolistPropsType) => {
         if (props.demo) {
             return
         }
-        dispatch(getTasksTC(props.todolist.id))
+        if(!props.tasks.length) {
+            dispatch(getTasksTC(props.todolist.id))
+        }
     }, [])
 
 

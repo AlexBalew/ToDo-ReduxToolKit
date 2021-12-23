@@ -17,18 +17,17 @@ import {
     TasksStateType
 } from "../../Reducers/tasks.reducer";
 import {Grid, Paper} from "@mui/material";
-import {MainReducerType} from "../../store/store";
 import {TodoListsType} from "../app/App";
 import {TodoList} from "./todolist/todolist";
 import {Navigate} from "react-router-dom";
+import {MainReducerType} from "../../store/mainReducer";
 
 
 export type ToDoListPropsType = {
-    demo?: boolean
 }
 
 
-export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
+export const TodoLists = React.memo((props: ToDoListPropsType) => {
 
     const dispatch = useDispatch();
     const todolistsFromState = useSelector<MainReducerType, TodoListsType>(state => state.todoLists)
@@ -36,10 +35,9 @@ export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
     const isLoggedIn = useSelector<MainReducerType, boolean>(state => state.login.isLoggedIn)
 
     useEffect(() => {
-        if (demo) {
-            return
+        if(!todolistsFromState.length) {
+            dispatch(getTodolistsTC())
         }
-        dispatch(getTodolistsTC())
     }, [])
 
 
@@ -78,6 +76,8 @@ export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
         return <Navigate to={'/login'}/>
     }
 
+    console.log(1111)
+
     return (
         <>
             <Grid container style={{padding: '20px'}}>
@@ -101,7 +101,6 @@ export const TodoLists = React.memo(({demo = false}: ToDoListPropsType) => {
                                     removeTDFunc={removeTDFunc}
                                     onChangeTaskTitle={onChangeTaskTitle}
                                     changeTDListTitleAPP={changeTDListTitleAPP}
-                                    demo={demo}
                                     todolist={tl}
                                 />
                             </Paper>

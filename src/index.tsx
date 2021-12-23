@@ -32,4 +32,7 @@ if(process.env.NODE_ENV === 'development' && module.hot) {
     module.hot.accept('./components/app/App', () => {
         reRenderEntireApp()
     })
+    /*module.hot.accept('./store/store', () => {
+        reRenderEntireApp()
+    })*/
 }

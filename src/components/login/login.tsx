@@ -2,8 +2,9 @@ import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, G
 import {FormikHelpers, useFormik} from 'formik'
 import {useSelector} from "react-redux";
 import {authTC} from "../../Reducers/authReducer";
-import {MainReducerType, useAppDispatch} from "../../store/store";
+import {useAppDispatch} from "../../store/store";
 import {Navigate} from "react-router-dom";
+import {MainReducerType} from "../../store/mainReducer";
 
 type FormValuesTypes = {
     email: string,

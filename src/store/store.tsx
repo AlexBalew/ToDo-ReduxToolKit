@@ -1,17 +1,7 @@
-import {combineReducers} from "redux";
 import thunk from "redux-thunk";
 import {configureStore} from "@reduxjs/toolkit";
-import {appReducer, authReducer, tasksReducer, todolistsReducer} from "../Reducers/reducer/all-reducer";
 import {useDispatch} from "react-redux";
-
-export type MainReducerType = ReturnType<typeof mainReducer>
-
-export let mainReducer = combineReducers({
-    app: appReducer,
-    todoLists: todolistsReducer,
-    login: authReducer,
-    tasks: tasksReducer,
-})
+import {mainReducer} from "./mainReducer";
 
 //export let store = createStore(mainReducer, applyMiddleware(thunk)) //redux approach
 
@@ -22,6 +12,12 @@ export const store = configureStore({ //redux toolkit approach
 
 type AppDispatchType = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<AppDispatchType>()
+
+if(process.env.NODE_ENV === 'development' && module.hot) {
+    module.hot.accept('./mainReducer', () => {
+       store.replaceReducer(mainReducer)
+    })
+}
 
 // @ts-ignore
 window['store'] = store
