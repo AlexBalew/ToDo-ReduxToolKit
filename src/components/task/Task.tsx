@@ -4,6 +4,7 @@ import {ResponseTaskType, TaskStatuses} from "../../api/Todolists.api";
 import {Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {TodolistDomainType} from "../../Reducers/todolist-reducer";
+import s from './Tasks.module.css'
 
 
 type TaskPropsType = {
@@ -24,10 +25,13 @@ export const Task = React.memo((props: TaskPropsType) => {
         props.onChangeTaskTitle(props.todolistId, props.task.id, newTitle)
     }, [props.todolistId, props.task.id, props.onChangeTaskTitle])
 
-    return <li key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'completedTask' : ''}
+    return <li key={props.task.id} className={props.task.status === TaskStatuses.Completed ? s.completedTask : ''}
                style={{maxWidth: '250px', display: 'flex', alignItems: "center", flexGrow: 1}}>
         <Checkbox onChange={onChangeCheckedHandler} checked={props.task.status === TaskStatuses.Completed} style={{}}/>
-        <EditableSpan title={props.task.title} onChange={onChangeTitleHandler} todolist={props.todolist}/>
+        <EditableSpan title={props.task.title}
+                      onChange={onChangeTitleHandler}
+                      todolist={props.todolist}
+        />
         <IconButton aria-label="delete" onClick={() => props.deleteTask(props.todolistId, props.task.id)}
                     disabled={props.todolist.entityStatus === 'loading'} style={{marginRight: 0}}>
             <Delete/>

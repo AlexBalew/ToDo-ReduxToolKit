@@ -7,3 +7,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
 }
+
+.completedTask {
+    text-decoration: line-through;
+}
