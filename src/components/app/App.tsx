@@ -24,8 +24,7 @@ import {MainReducerType} from "../../store/mainReducer";
 
 export type TodoListsType = Array<TodolistDomainType>
 
-type PropsType = {
-}
+type PropsType = {}
 
 function App(props: PropsType) {
 
@@ -46,17 +45,23 @@ function App(props: PropsType) {
     }, [dispatch]);
 
 
-
     if (!isInitialized) {
-        return <div style={{display: "flex", justifyContent: "center", marginTop: "30%"}}><CircularProgress/></div>
+        return <div style={{display: "flex", justifyContent: "center", marginTop: "30%"}}>
+            <CircularProgress/></div>
     }
 
     return (
-        <div style={{flexGrow: 1, background: '#E0E0E0', minHeight: '100vh', paddingBottom: '20px'}}>
+        <div style={{
+            flexGrow: 1,
+            background: '#E0E0E0',
+            minHeight: '100vh',
+            paddingBottom: '20px'
+        }}>
             <AppBar position="static" color="default">
                 <Toolbar>
                     <ErrorSnackBar/>
-                    <IconButton edge="start" style={{marginRight: 2}} color="inherit" aria-label="menu">
+                    <IconButton edge="start" style={{marginRight: 2}} color="inherit"
+                                aria-label="menu">
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6" style={{flexGrow: 1}} align='center'>
