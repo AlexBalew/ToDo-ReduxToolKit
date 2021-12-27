@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {one, zero } from 'Variables/Variables';
 
 import { ResponseTaskType, tasksAPI, TaskStatuses } from '../api/Todolists.api';
 import { MainReducerType } from '../store/mainReducer';
@@ -8,6 +7,8 @@ import { handleServerAppError, handleServerNetworkError } from '../utils/error-u
 import { setAppStatusAC } from './app-reducer';
 import { addTodolistTC, getTodolistsTC, removeTodolistsTC } from './todolist-reducer';
 
+import {one, zero } from 'Variables/Variables';
+
 export type TasksStateType = {
   [key: string]: Array<ResponseTaskType>;
 };
@@ -15,6 +16,7 @@ const initialState: TasksStateType = {};
 
 export const getTasksTC = createAsyncThunk(
   'tasks/getTasks',
+    // eslint-disable-next-line consistent-return
   async (todolistID: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }));
     const res = await tasksAPI.getTasks(todolistID);
@@ -35,6 +37,7 @@ export const deleteTaskTC = createAsyncThunk(
     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }));
     return tasksAPI
       .deleteTask(param.todolistID, param.taskId)
+        // eslint-disable-next-line consistent-return
       .then(res => {
         if (res.data.resultCode === zero) {
           thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }));
@@ -54,6 +57,7 @@ export const addTaskTC = createAsyncThunk(
     dispatch(setAppStatusAC({ status: 'loading' }));
     return tasksAPI
       .createTask(param.todolistID, param.title)
+        // eslint-disable-next-line consistent-return
       .then(res => {
         if (res.data.resultCode === zero) {
           dispatch(setAppStatusAC({ status: 'succeeded' }));
@@ -92,6 +96,7 @@ export const changeTaskStatusTC = createAsyncThunk(
   async (
     param: { todolistId: string; taskId: string; status: TaskStatuses },
     { dispatch, getState },
+    // eslint-disable-next-line consistent-return
   ) => {
     dispatch(setAppStatusAC({ status: 'loading' }));
 
@@ -131,6 +136,7 @@ export const changeTaskTitleTC = createAsyncThunk(
   async (
     param: { todolistId: string; taskId: string; title: string },
     { dispatch, getState },
+    // eslint-disable-next-line consistent-return
   ) => {
     dispatch(setAppStatusAC({ status: 'loading' }));
 

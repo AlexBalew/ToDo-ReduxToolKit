@@ -15,6 +15,7 @@ export type TodolistDomainType = TodolistType & {
 
 export const getTodolistsTC = createAsyncThunk(
   'todolists/getTodolists',
+  // eslint-disable-next-line consistent-return
   async (param, { dispatch }) => {
     dispatch(setAppStatusAC({ status: 'loading' }));
     const res = await todolistsAPI.getTDLists();
@@ -29,9 +30,9 @@ export const getTodolistsTC = createAsyncThunk(
 
 export const removeTodolistsTC = createAsyncThunk(
   'todolists/removeTodolists',
+    // eslint-disable-next-line consistent-return
   async (param: { todolistId: string }, { dispatch }) => {
     dispatch(setAppStatusAC({ status: 'loading' }));
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     dispatch(changeTDlEntityStatusAC({ status: 'loading', tlID: param.todolistId }));
     const res = await todolistsAPI.deleteTDLists(param.todolistId);
     try {
@@ -48,6 +49,7 @@ export const removeTodolistsTC = createAsyncThunk(
 
 export const addTodolistTC = createAsyncThunk(
   'todolists/addTodolist',
+    // eslint-disable-next-line consistent-return
   async (param: { title: string }, { dispatch }) => {
     dispatch(setAppStatusAC({ status: 'loading' }));
     const res = await todolistsAPI.createTDLists(param.title);
@@ -65,6 +67,7 @@ export const addTodolistTC = createAsyncThunk(
 
 export const changeTodolistTitleTC = createAsyncThunk(
   'todolists/changeTodolistTitle',
+    // eslint-disable-next-line consistent-return
   async (param: { todolistId: string; title: string }, { dispatch }) => {
     dispatch(setAppStatusAC({ status: 'loading' }));
     const res = await todolistsAPI.updateTDLists(param.todolistId, param.title);
@@ -119,11 +122,12 @@ export const sliceTodolist = createSlice({
     /* setTodolistsAC(state, action: PayloadAction<{ todolists: Array<TodolistType> }>) {
              return action.payload.todolists.map(tl => ({...tl, filter: "all", entityStatus: 'idle'}))
          }, */
-    clearTodoReduxAC(state, action: PayloadAction) {
-      // state = []
-    },
+    // clearTodoReduxAC(state, action: PayloadAction) {
+    //   // state = []
+    // },
   },
   extraReducers: builder => {
+      // eslint-disable-next-line consistent-return
     builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
       if (action.payload)
         return action.payload.todolists.map(tl => ({
