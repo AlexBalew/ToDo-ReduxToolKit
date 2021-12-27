@@ -17,12 +17,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import { Route, Routes } from 'react-router-dom';
 
-import { initializeAppTC, RequestStatusType } from '../../Reducers/app-reducer';
-import { logOutTC } from '../../Reducers/authReducer';
-import { TodolistDomainType } from '../../Reducers/todolist-reducer';
-import { MainReducerType } from '../../store/mainReducer';
-
 import { ErrorSnackBar, Login, TodoLists } from 'components';
+import { initializeAppTC, RequestStatusType } from 'Reducers/app-reducer';
+import { logOutTC } from 'Reducers/authReducer';
+import { TodolistDomainType } from 'Reducers/todolist-reducer';
+import { MainReducerType } from 'store/mainReducer';
 import { Nullable } from 'types';
 
 export type TodoListsType = Array<TodolistDomainType>;
