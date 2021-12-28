@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { ResponseTaskType, tasksAPI, TaskStatuses } from '../api/Todolists.api';
-import { MainReducerType } from '../store/mainReducer';
-import { handleServerAppError, handleServerNetworkError } from '../utils/error-utils';
-
 import { setAppStatusAC } from './app-reducer';
 import { addTodolistTC, getTodolistsTC, removeTodolistsTC } from './todolist-reducer';
 
-import {one, zero } from 'Variables/Variables';
+import { ResponseTaskType, tasksAPI, TaskStatuses } from 'api/Todolists.api';
+import { MainReducerType } from 'store/mainReducer';
+import { handleServerAppError, handleServerNetworkError } from 'utils/error-utils';
+import { one, zero } from 'Variables/Variables';
 
 export type TasksStateType = {
   [key: string]: Array<ResponseTaskType>;

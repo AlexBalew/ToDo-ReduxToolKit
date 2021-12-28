@@ -4,14 +4,20 @@ import { Grid, Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { TaskStatuses } from '../../api/Todolists.api';
+import { TaskStatuses } from '../../api';
+import { MainReducerType } from '../../store';
+import { AddItemForm } from '../addItemForm';
+import { TodoListsType } from '../app/App';
+
+import { TodoList } from './todolist/todolist';
+
 import {
   addTaskTC,
   changeTaskStatusTC,
   changeTaskTitleTC,
   deleteTaskTC,
   TasksStateType,
-} from '../../Reducers/tasks.reducer';
+} from 'Reducers/tasks.reducer';
 import {
   addTodolistTC,
   changeTDlFilterAC,
@@ -19,12 +25,7 @@ import {
   FilterType,
   getTodolistsTC,
   removeTodolistsTC,
-} from '../../Reducers/todolist-reducer';
-import { MainReducerType } from '../../store/mainReducer';
-import { AddItemForm } from '../addItemForm/AddItemForm';
-import { TodoListsType } from '../app/App';
-
-import { TodoList } from './todolist/todolist';
+} from 'Reducers/todolist-reducer';
 
 export const TodoLists = React.memo(() => {
   const dispatch = useDispatch();

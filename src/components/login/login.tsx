@@ -14,10 +14,10 @@ import { FormikHelpers, useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { authTC } from '../../Reducers/authReducer';
-import { MainReducerType } from '../../store/mainReducer';
-import { useAppDispatch } from '../../store/store';
-import { zero } from '../../Variables/Variables';
+import { authTC } from 'Reducers/authReducer';
+import { MainReducerType } from 'store/mainReducer';
+import { useAppDispatch } from 'store/store';
+import { zero } from 'Variables';
 
 type FormValuesTypes = {
   email: string;

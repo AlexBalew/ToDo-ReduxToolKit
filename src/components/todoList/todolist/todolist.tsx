@@ -4,12 +4,13 @@ import { Delete } from '@mui/icons-material';
 import { Button, IconButton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-import { ResponseTaskType, TaskStatuses } from '../../../api/Todolists.api';
-import { getTasksTC } from '../../../Reducers/tasks.reducer';
-import { FilterType, TodolistDomainType } from '../../../Reducers/todolist-reducer';
-import { AddItemForm } from '../../addItemForm/AddItemForm';
-import { EditableSpan } from '../../editableSpan/EditableSpan';
-import { Task } from '../../task/Task';
+import { AddItemForm } from '../../addItemForm';
+import { EditableSpan } from '../../editableSpan';
+import { Task } from '../../task';
+
+import { ResponseTaskType, TaskStatuses } from 'api/Todolists.api';
+import { getTasksTC } from 'Reducers/tasks.reducer';
+import { FilterType, TodolistDomainType } from 'Reducers/todolist-reducer';
 
 type TodolistPropsType = {
   id: string;

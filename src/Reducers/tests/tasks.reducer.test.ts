@@ -11,7 +11,8 @@ import {
   TasksStateType,
 } from '../tasks.reducer';
 import { addTodolistTC, getTodolistsTC, removeTodolistsTC } from '../todolist-reducer';
-import {four, three} from "../../Variables/Variables";
+
+import {five, four, one, six, three, two, zero} from "Variables/Variables";
 
 const todolistID1 = v1();
 const todolistID2 = v1();
@@ -263,11 +264,11 @@ test('new task should be added to exact array', () => {
 
   const finalState = tasksReducer(startState, action);
 
-  expect(finalState[todolistID2].length).toBe(5);
-  expect(finalState[todolistID2][0].title).toBe('Дайте танк!');
-  expect(finalState[todolistID2][2].title).toBe('Neuro');
-  expect(finalState[todolistID4].length).toBe(4);
-  expect(finalState[todolistID2][4].title).toBe('Liquid');
+  expect(finalState[todolistID2].length).toBe(five);
+  expect(finalState[todolistID2][zero].title).toBe('Дайте танк!');
+  expect(finalState[todolistID2][two].title).toBe('Neuro');
+  expect(finalState[todolistID4].length).toBe(four);
+  expect(finalState[todolistID2][four].title).toBe('Liquid');
 });
 
 test('task title should be changed in exact array', () => {
@@ -281,8 +282,8 @@ test('task title should be changed in exact array', () => {
     changeTaskTitleTC.fulfilled(updateTitleModel, 'requestId', updateTitleModel),
   );
 
-  expect(finalState[todolistID3][1].title).toBe('It');
-  expect(finalState[todolistID3][2].title).toBe('Family Guy');
+  expect(finalState[todolistID3][one].title).toBe('It');
+  expect(finalState[todolistID3][two].title).toBe('Family Guy');
 });
 
 test('task status should be changed in exact array', () => {
@@ -298,10 +299,10 @@ test('task status should be changed in exact array', () => {
     changeTaskStatusTC.fulfilled(updateModel, 'requestId', updateModel),
   );
 
-  expect(finalState[todolistID3][1].status).toBe(TaskStatuses.New);
-  expect(finalState[todolistID3][2].status).toBe(TaskStatuses.New);
-  expect(finalState[todolistID3][0].status).toBe(TaskStatuses.Completed);
-  expect(finalState[todolistID3][3].status).toBe(TaskStatuses.Completed);
+  expect(finalState[todolistID3][one].status).toBe(TaskStatuses.New);
+  expect(finalState[todolistID3][two].status).toBe(TaskStatuses.New);
+  expect(finalState[todolistID3][zero].status).toBe(TaskStatuses.Completed);
+  expect(finalState[todolistID3][three].status).toBe(TaskStatuses.Completed);
 });
 
 test('new array should be added when new todolist is added', () => {
@@ -315,13 +316,13 @@ test('new array should be added when new todolist is added', () => {
 
   const keys = Object.keys(endState);
   const newKey = keys.find(
-    k => k != todolistID1 && k != todolistID2 && k != todolistID3 && k != todolistID4,
+    k => k !== todolistID1 && k !== todolistID2 && k !== todolistID3 && k !== todolistID4,
   );
   if (!newKey) {
     throw Error('new key should be added');
   }
 
-  expect(keys.length).toBe(6);
+  expect(keys.length).toBe(six);
   expect(endState[newKey]).toEqual([]);
 });
 
@@ -334,7 +335,7 @@ test('property with todolistId should be deleted', () => {
 
   const keys = Object.keys(endState);
 
-  expect(keys.length).toBe(4);
+  expect(keys.length).toBe(four);
   expect(endState[todolistID3]).not.toBeDefined();
 });
 
@@ -353,7 +354,7 @@ test('new empty arrays of tasks should be added when todolists were set', () => 
 
   const keys = Object.keys(endState);
 
-  expect(keys.length).toBe(2);
+  expect(keys.length).toBe(two);
   expect(endState['1']).toStrictEqual([]);
   expect(endState['2']).toStrictEqual([]);
 });
@@ -395,7 +396,7 @@ test('new arrays of tasks should be added to state when todolists were set', () 
 
   const endState = tasksReducer({ [todolistID5]: [] }, action);
 
-  expect(endState[todolistID5].length).toBe(2);
-  expect(endState[todolistID5][0].id).toBe('23');
-  expect(endState[todolistID5][1].title).toBe('11133');
+  expect(endState[todolistID5].length).toBe(two);
+  expect(endState[todolistID5][zero].id).toBe('23');
+  expect(endState[todolistID5][one].title).toBe('11133');
 });
