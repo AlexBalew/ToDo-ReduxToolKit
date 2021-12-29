@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { tasksAPI, todolistsAPI } from './Todolists.api';
+
+import { zero } from 'Variables';
 
 export default {
   title: 'API',
@@ -39,6 +41,7 @@ export const CreateTodolists = () => {
             setTitle(e.currentTarget.value);
           }}
         />
+          {/* eslint-disable-next-line react/button-has-type */}
         <button onClick={createTodolistsOnClick}>Create todolist</button>
       </div>
     </div>
@@ -66,6 +69,7 @@ export const DeleteTodolists = () => {
             setTodolistId(e.currentTarget.value);
           }}
         />
+          {/* eslint-disable-next-line react/button-has-type */}
         <button onClick={deleteTodolistsOnClick}>Delete todolist</button>
       </div>
     </div>
@@ -100,6 +104,7 @@ export const UpdateTodolists = () => {
           setTitle(e.currentTarget.value);
         }}
       />
+        {/* eslint-disable-next-line react/button-has-type */}
       <button onClick={UpdateTodolistsOnClick}>Update TDList title</button>
     </div>
   );
@@ -126,6 +131,7 @@ export const GetTasks = () => {
             setTodolistId(e.currentTarget.value);
           }}
         />
+          {/* eslint-disable-next-line react/button-has-type */}
         <button onClick={GetTasksOnClick}>Get tasks from exact TDList</button>
       </div>
     </div>
@@ -160,6 +166,7 @@ export const CreateTask = () => {
           setTitle(e.currentTarget.value);
         }}
       />
+        {/* eslint-disable-next-line react/button-has-type */}
       <button onClick={CreateTaskOnClick}>Create task in exact TDList</button>
     </div>
   );
@@ -193,6 +200,7 @@ export const DeleteExactTask = () => {
           setTaskID(e.currentTarget.value);
         }}
       />
+        {/* eslint-disable-next-line react/button-has-type */}
       <button onClick={DeleteTaskOnClick}>Delete exact task from exact TDList</button>
     </div>
   );
@@ -205,9 +213,9 @@ export const UpdateTask = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [deadline, setDeadline] = useState<string | null>(null);
-  const [priority, setPriority] = useState<number>(0);
+  const [priority, setPriority] = useState<number>(zero);
   const [startDate, setStartDate] = useState<string | null>(null);
-  const [status, setStatus] = useState<number>(0);
+  const [status, setStatus] = useState<number>(zero);
 
   const UpdateTaskOnCLick = () => {
     tasksAPI
@@ -303,6 +311,7 @@ export const UpdateTask = () => {
           task status
         </li>
       </ul>
+        {/* eslint-disable-next-line react/button-has-type */}
       <button onClick={UpdateTaskOnCLick}>Update exact task from exact TDList</button>
     </div>
   );
