@@ -1,9 +1,9 @@
 import React from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
 
 import {action} from "@storybook/addon-actions";
-import {EditableSpan} from "../components/editableSpan/EditableSpan";
+import {ComponentStory, ComponentMeta} from '@storybook/react';
 
+import {EditableSpan} from "../components";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -22,6 +22,7 @@ export default {
 } as ComponentMeta<typeof EditableSpan>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+// eslint-disable-next-line react/jsx-props-no-spreading
 const Template: ComponentStory<typeof EditableSpan> = (args) => <EditableSpan {...args} />;
 
 export const EditableSpanExample = Template.bind({});

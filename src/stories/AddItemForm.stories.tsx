@@ -1,8 +1,9 @@
 import React from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
-import {AddItemForm} from "../components/addItemForm/AddItemForm";
-import {action} from "@storybook/addon-actions";
 
+import {action} from "@storybook/addon-actions";
+import {ComponentStory, ComponentMeta} from '@storybook/react';
+
+import {AddItemForm} from "../components";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -17,6 +18,7 @@ export default {
 } as ComponentMeta<typeof AddItemForm>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+// eslint-disable-next-line react/jsx-props-no-spreading
 const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
 
 export const AddItemFormExample = Template.bind({});

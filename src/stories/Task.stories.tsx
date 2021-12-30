@@ -1,8 +1,10 @@
 import React from 'react';
-import {ComponentMeta, ComponentStory} from '@storybook/react';
+
 import {action} from "@storybook/addon-actions";
-import {Task} from "../components/task/Task";
+import {ComponentMeta, ComponentStory} from '@storybook/react';
+
 import {TaskPriorities, TaskStatuses} from "../api/Todolists.api";
+import {Task} from "../components";
 
 export default {
     title: 'TaskExample',
@@ -15,6 +17,7 @@ const baseArgs = {
     deleteTask: action('Exact task was deleted'),
 }
 
+// eslint-disable-next-line react/jsx-props-no-spreading
 const Template: ComponentStory<typeof Task> = (args) => <Task {...args} />;
 
 export const TaskExample = Template.bind({});
