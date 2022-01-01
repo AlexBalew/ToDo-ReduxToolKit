@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
 import { Delete } from '@mui/icons-material';
-import { Button, IconButton } from '@mui/material';
+import {Button, IconButton, ThemeProvider} from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { AddItemForm } from '../../addItemForm';
@@ -9,6 +9,7 @@ import { EditableSpan } from '../../editableSpan';
 import { Task } from '../../task';
 
 import { ResponseTaskType, TaskStatuses } from 'api/Todolists.api';
+import { theme } from 'components/app/App';
 import { getTasksTC } from 'Reducers/tasks.reducer';
 import { FilterType, TodolistDomainType } from 'Reducers/todolist-reducer';
 
@@ -111,6 +112,7 @@ export const TodoList = React.memo((props: TodolistPropsType) => {
             />
           ))}
         </ul>
+        <ThemeProvider theme={theme}>
         <Button
           color={props.todolist.filter === 'all' ? 'secondary' : 'primary'}
           variant={props.todolist.filter === 'all' ? 'outlined' : 'text'}
@@ -119,6 +121,8 @@ export const TodoList = React.memo((props: TodolistPropsType) => {
         >
           All
         </Button>
+        </ThemeProvider>
+        <ThemeProvider theme={theme}>
         <Button
           color={props.todolist.filter === 'active' ? 'secondary' : 'primary'}
           variant={props.todolist.filter === 'active' ? 'outlined' : 'text'}
@@ -127,6 +131,8 @@ export const TodoList = React.memo((props: TodolistPropsType) => {
         >
           Active
         </Button>
+        </ThemeProvider>
+          <ThemeProvider theme={theme}>
         <Button
           color={props.todolist.filter === 'completed' ? 'secondary' : 'primary'}
           variant={props.todolist.filter === 'completed' ? 'outlined' : 'text'}
@@ -135,6 +141,7 @@ export const TodoList = React.memo((props: TodolistPropsType) => {
         >
           Completed
         </Button>
+          </ThemeProvider>
       </div>
     </>
   );
