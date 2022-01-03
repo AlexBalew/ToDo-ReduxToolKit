@@ -1,7 +1,9 @@
 import React, { ChangeEvent, useCallback } from 'react';
 
 import { Delete } from '@mui/icons-material';
-import { Checkbox, IconButton } from '@mui/material';
+import {Checkbox, IconButton, ThemeProvider} from '@mui/material';
+
+import {theme} from "../app/App";
 
 import s from './Tasks.module.css';
 
@@ -42,11 +44,13 @@ export const Task = React.memo((props: TaskPropsType) => {
       className={props.task.status === TaskStatuses.Completed ? s.completedTask : ''}
       style={{ maxWidth: '250px', display: 'flex', alignItems: 'center', flexGrow: 1 }}
     >
+      <ThemeProvider theme={theme}>
       <Checkbox
         onChange={onChangeCheckedHandler}
         checked={props.task.status === TaskStatuses.Completed}
         style={{}}
       />
+      </ThemeProvider>
       <EditableSpan
         title={props.task.title}
         onChange={onChangeTitleHandler}
